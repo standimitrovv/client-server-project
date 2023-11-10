@@ -17,7 +17,7 @@ export default function Comments() {
 
   return (
     <div className='mt-4'>
-      <form className='flex flex-col'>
+      <form className='flex flex-col mb-2' onSubmit={(e) => e.preventDefault()}>
         <label htmlFor='username'>Username</label>
         <input
           type='text'
@@ -35,16 +35,17 @@ export default function Comments() {
           cols={20}
           className='rounded-md mb-4 text-black p-2'
         />
-
-        <button onClick={handleFormSubmit}>Add</button>
+        <button onClick={handleFormSubmit} type='submit'>
+          Add
+        </button>
       </form>
 
       {comments.map((c, index) => (
-        <div key={`${c.text}${c.username}${index}`}>
+        <div key={`${c.text}${c.username}${index}`} className='mb-4'>
           {/* <Image /> */}
           <div className='flex flex-col'>
             <div className='flex'>
-              <span className='font-semibold'>{`@${c.username}`}</span>
+              <span className='font-semibold mr-2'>{`@${c.username}`}</span>
               <span>12 hours ago</span>
             </div>
             <span>{c.text}</span>
