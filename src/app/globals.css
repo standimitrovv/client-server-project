@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .background {
+    background: #000046;
+    background: -webkit-linear-gradient(to right, #1cb5e0, #000046);
+    background: linear-gradient(to right, #1cb5e0, #000046);
+  }
+}

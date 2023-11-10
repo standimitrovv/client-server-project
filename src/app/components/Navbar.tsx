@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export const Navbar = () => {
   return (
-    <nav className='flex justify-between py-4'>
+    <nav className='flex justify-between py-4 xl:max-w-7xl m-auto'>
       <Link href='/'>Stanimir Dimitrov</Link>
 
       <ul className='flex space-x-8'>
