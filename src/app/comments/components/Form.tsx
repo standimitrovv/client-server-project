@@ -11,7 +11,8 @@ export const Form: React.FunctionComponent<Props> = ({ onSubmit }) => {
 
   const [comment, setComment] = useState<string>('');
 
-  const isSubmitButtonDisabled = !username || !comment;
+  const isSubmitButtonDisabled =
+    !username || !comment || !!comment.match('^\\s+$');
 
   const handleFormSubmit = () => {
     onSubmit(username, comment);
