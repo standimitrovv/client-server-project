@@ -11,6 +11,8 @@ export const Form: React.FunctionComponent<Props> = ({ onSubmit }) => {
 
   const [comment, setComment] = useState<string>('');
 
+  const isSubmitButtonDisabled = !username || !comment;
+
   const handleFormSubmit = () => {
     onSubmit(username, comment);
 
@@ -45,9 +47,11 @@ export const Form: React.FunctionComponent<Props> = ({ onSubmit }) => {
       />
       <button
         onClick={handleFormSubmit}
-        type='submit'
-        disabled={!username || !comment}
-        className='border rounded-md py-2 bg-green-300 cursor-pointer'
+        type='button'
+        disabled={isSubmitButtonDisabled}
+        className={`border rounded-md py-2 ${
+          isSubmitButtonDisabled ? 'bg-gray-400 text-black' : 'bg-green-300'
+        }`}
       >
         Add
       </button>

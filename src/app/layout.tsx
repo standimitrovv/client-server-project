@@ -17,7 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={`${inter.className} background text-white text-lg`}>
+      <body
+        className={`${inter.className} background text-white text-lg font-medium`}
+      >
         <Navbar />
 
         <Divider />
