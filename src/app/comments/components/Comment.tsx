@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import TimeAgo from 'react-timeago';
 import img from '../../images/icon-p.png';
 import { IComment } from '../models/Comment';
 
@@ -14,9 +15,13 @@ export const Comment: React.FunctionComponent<Props> = ({ comment }) => {
       <Image src={img} alt='profile-pic' width={80} className='rounded-full' />
 
       <div className='flex flex-col ml-2'>
-        <div className='flex'>
+        <div className='flex items-center'>
           <span className='font-semibold mr-2'>{`@${comment.username}`}</span>
-          <span>12 hours ago</span>
+          <TimeAgo
+            date={new Date()}
+            minPeriod={10}
+            className='text-gray-200 text-sm'
+          />
         </div>
         <span>{comment.text}</span>
       </div>
