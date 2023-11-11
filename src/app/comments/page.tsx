@@ -1,56 +1,24 @@
 'use client';
 import { useState } from 'react';
-
-interface Comment {
-  username: string;
-  text: string;
-}
+import { Comment } from './components/Comment';
+import { Form } from './components/Form';
+import { IComment } from './models/Comment';
 
 export default function Comments() {
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<IComment[]>([]);
 
-  const handleFormSubmit = () => {
-    const newComment = [{ text: 'abss', username: 'Miro' }];
+  const handleFormSubmit = (username: string, text: string) => {
+    const newComment = [{ text, username }];
 
     setComments((prevState) => [...prevState, ...newComment]);
   };
 
   return (
     <div className='mt-4'>
-      <form className='flex flex-col mb-2' onSubmit={(e) => e.preventDefault()}>
-        <label htmlFor='username'>Username</label>
-        <input
-          type='text'
-          id='username'
-          name='username'
-          className='mb-4 rounded-md text-black p-2'
-        />
-
-        <label htmlFor='comment'>Comment</label>
-        <textarea
-          name='comment'
-          id='comment'
-          placeholder='What are your thoughts?'
-          rows={4}
-          cols={20}
-          className='rounded-md mb-4 text-black p-2'
-        />
-        <button onClick={handleFormSubmit} type='submit'>
-          Add
-        </button>
-      </form>
+      <Form onSubmit={handleFormSubmit} />
 
       {comments.map((c, index) => (
-        <div key={`${c.text}${c.username}${index}`} className='mb-4'>
-          {/* <Image /> */}
-          <div className='flex flex-col'>
-            <div className='flex'>
-              <span className='font-semibold mr-2'>{`@${c.username}`}</span>
-              <span>12 hours ago</span>
-            </div>
-            <span>{c.text}</span>
-          </div>
-        </div>
+        <Comment key={`${c.text}${c.username}${index}`} comment={c} />
       ))}
     </div>
   );
