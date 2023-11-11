@@ -13,15 +13,20 @@ export const Form: React.FunctionComponent<Props> = ({ onSubmit }) => {
 
   const handleFormSubmit = () => {
     onSubmit(username, comment);
+
+    setUsername('');
+
+    setComment('');
   };
 
   return (
-    <form className='flex flex-col mb-2' onSubmit={(e) => e.preventDefault()}>
+    <form className='flex flex-col mb-8' onSubmit={(e) => e.preventDefault()}>
       <label htmlFor='username'>Username</label>
       <input
         type='text'
         id='username'
         name='username'
+        placeholder='What is your username?'
         className='mb-4 rounded-md text-black p-2'
         value={username}
         onChange={(e) => setUsername(e.target.value)}
@@ -42,6 +47,7 @@ export const Form: React.FunctionComponent<Props> = ({ onSubmit }) => {
         onClick={handleFormSubmit}
         type='submit'
         disabled={!username || !comment}
+        className='border rounded-md py-2 bg-green-300 cursor-pointer'
       >
         Add
       </button>

@@ -22,7 +22,7 @@ export default function RootLayout({
 
         <Divider />
 
-        <main className='xl:max-w-7xl m-auto sm:px-8'>{children}</main>
+        <main className='xl:max-w-7xl m-auto sm:px-6 xs:px-6'>{children}</main>
       </body>
     </html>
   );
