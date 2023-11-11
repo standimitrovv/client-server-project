@@ -14,7 +14,7 @@ export const Comment: React.FunctionComponent<Props> = ({ comment }) => {
     <li className='mb-4 flex'>
       <Image src={img} alt='profile-pic' width={80} className='rounded-full' />
 
-      <div className='flex flex-col ml-2'>
+      <div className='flex flex-col'>
         <div className='flex items-center'>
           <span className='font-semibold mr-2'>{`@${comment.username}`}</span>
           <TimeAgo
