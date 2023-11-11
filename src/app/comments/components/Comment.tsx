@@ -18,7 +18,7 @@ export const Comment: React.FunctionComponent<Props> = ({ comment }) => {
         <div className='flex items-center'>
           <span className='font-semibold mr-2'>{`@${comment.username}`}</span>
           <TimeAgo
-            date={new Date()}
+            date={comment.date}
             minPeriod={10}
             className='text-gray-200 text-sm'
           />

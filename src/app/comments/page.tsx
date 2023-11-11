@@ -8,7 +8,7 @@ export default function Comments() {
   const [comments, setComments] = useState<IComment[]>([]);
 
   const handleFormSubmit = (username: string, text: string) => {
-    const newComment = [{ text, username }];
+    const newComment = [{ text, username, date: new Date() }];
 
     setComments((prevState) => [...prevState, ...newComment]);
   };
