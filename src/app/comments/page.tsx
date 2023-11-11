@@ -17,9 +17,11 @@ export default function Comments() {
     <div className='mt-4'>
       <Form onSubmit={handleFormSubmit} />
 
-      {comments.map((c, index) => (
-        <Comment key={`${c.text}${c.username}${index}`} comment={c} />
-      ))}
+      <ul>
+        {comments.map((c, index) => (
+          <Comment key={`${c.text}${c.username}${index}`} comment={c} />
+        ))}
+      </ul>
     </div>
   );
 }

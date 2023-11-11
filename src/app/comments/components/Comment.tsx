@@ -11,7 +11,7 @@ interface Props {
 
 export const Comment: React.FunctionComponent<Props> = ({ comment }) => {
   return (
-    <div className='mb-4 flex'>
+    <li className='mb-4 flex'>
       <Image src={img} alt='profile-pic' width={80} className='rounded-full' />
 
       <div className='flex flex-col ml-2'>
@@ -25,6 +25,6 @@ export const Comment: React.FunctionComponent<Props> = ({ comment }) => {
         </div>
         <span>{comment.text}</span>
       </div>
-    </div>
+    </li>
   );
 };
