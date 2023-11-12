@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { CommentsProvider } from './comments/state/CommentsProvider';
 import { Divider } from './components/Divider';
 import { Navbar } from './components/Navbar';
 import './globals.css';
@@ -24,7 +25,9 @@ export default function RootLayout({
 
         <Divider />
 
-        <main className='xl:max-w-7xl m-auto sm:px-6 xs:px-6'>{children}</main>
+        <main className='xl:max-w-7xl m-auto sm:px-6 xs:px-6'>
+          <CommentsProvider>{children}</CommentsProvider>
+        </main>
       </body>
     </html>
   );

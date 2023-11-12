@@ -1,16 +1,13 @@
 'use client';
-import { useState } from 'react';
 import { Comment } from './components/Comment';
 import { Form } from './components/Form';
-import { IComment } from './models/Comment';
+import { useComments } from './state/CommentsProvider';
 
 export default function Comments() {
-  const [comments, setComments] = useState<IComment[]>([]);
+  const { comments, addNewComment } = useComments();
 
   const handleFormSubmit = (username: string, text: string) => {
-    const newComment = [{ text, username, date: new Date() }];
-
-    setComments((prevState) => [...prevState, ...newComment]);
+    addNewComment({ text, username, date: new Date() });
   };
 
   return (
