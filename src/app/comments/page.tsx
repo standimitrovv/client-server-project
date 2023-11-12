@@ -11,7 +11,7 @@ export default function Comments() {
   };
 
   return (
-    <div className='mt-4'>
+    <section>
       <Form onSubmit={handleFormSubmit} />
 
       <ul>
@@ -19,6 +19,6 @@ export default function Comments() {
           <Comment key={`${c.text}${c.username}${index}`} comment={c} />
         ))}
       </ul>
-    </div>
+    </section>
   );
 }

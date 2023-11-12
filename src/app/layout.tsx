@@ -26,7 +26,7 @@ export default function RootLayout({
 
         <Divider />
 
-        <main className={`${PAGE_WIDTH}`}>
+        <main className={`${PAGE_WIDTH} mt-4`}>
           <CommentsProvider>{children}</CommentsProvider>
         </main>
       </body>
