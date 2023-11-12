@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { PAGE_WIDTH } from '../CommonStyles';
 
 const links = [
   {
@@ -17,7 +18,7 @@ const links = [
 
 export const Navbar = () => {
   return (
-    <nav className='flex justify-between py-4 max-w-6xl sm:px-8 xs:px-8 m-auto'>
+    <nav className={`flex justify-between py-4 ${PAGE_WIDTH}`}>
       <Link href='/'>Stanimir Dimitrov</Link>
 
       <ul className='flex space-x-8'>

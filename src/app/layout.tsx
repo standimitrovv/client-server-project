@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { PAGE_WIDTH } from './CommonStyles';
 import { CommentsProvider } from './comments/state/CommentsProvider';
 import { Divider } from './components/Divider';
 import { Navbar } from './components/Navbar';
@@ -25,7 +26,7 @@ export default function RootLayout({
 
         <Divider />
 
-        <main className='max-w-6xl m-auto sm:px-8 xs:px-8'>
+        <main className={`${PAGE_WIDTH}`}>
           <CommentsProvider>{children}</CommentsProvider>
         </main>
       </body>
