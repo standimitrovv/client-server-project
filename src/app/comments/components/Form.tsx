@@ -24,25 +24,29 @@ export const Form: React.FunctionComponent<Props> = ({ onSubmit }) => {
 
   return (
     <form className='flex flex-col mb-8' onSubmit={(e) => e.preventDefault()}>
-      <label htmlFor='username'>Username</label>
+      <label htmlFor='username' className='mb-2'>
+        Username
+      </label>
       <input
         type='text'
         id='username'
         name='username'
         placeholder='What is your username?'
-        className='mb-4 rounded-md text-black p-2'
+        className='mb-6 rounded-md text-black p-2'
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
 
-      <label htmlFor='comment'>Comment</label>
+      <label htmlFor='comment' className='mb-2'>
+        Comment
+      </label>
       <textarea
         name='comment'
         id='comment'
         placeholder='What are your thoughts?'
         rows={4}
         cols={20}
-        className='rounded-md mb-4 text-black p-2'
+        className='rounded-md mb-6 text-black p-2'
         value={comment}
         onChange={(e) => setComment(e.target.value)}
       />

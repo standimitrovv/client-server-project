@@ -23,7 +23,11 @@ export const Comment: React.FunctionComponent<Props> = ({ comment }) => {
             className='text-gray-200 text-sm'
           />
         </div>
-        <span>{comment.text}</span>
+        <div className='grid grid-cols-1'>
+          <span className='text-ellipsis overflow-hidden whitespace-nowrap'>
+            {comment.text}
+          </span>
+        </div>
       </div>
     </li>
   );

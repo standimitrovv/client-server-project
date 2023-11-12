@@ -17,7 +17,7 @@ const links = [
 
 export const Navbar = () => {
   return (
-    <nav className='flex justify-between py-4 xl:max-w-7xl sm:px-6 xs:px-6 m-auto'>
+    <nav className='flex justify-between py-4 max-w-6xl sm:px-8 xs:px-8 m-auto'>
       <Link href='/'>Stanimir Dimitrov</Link>
 
       <ul className='flex space-x-8'>

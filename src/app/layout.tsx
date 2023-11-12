@@ -25,7 +25,7 @@ export default function RootLayout({
 
         <Divider />
 
-        <main className='xl:max-w-7xl m-auto sm:px-6 xs:px-6'>
+        <main className='max-w-6xl m-auto sm:px-8 xs:px-8'>
           <CommentsProvider>{children}</CommentsProvider>
         </main>
       </body>

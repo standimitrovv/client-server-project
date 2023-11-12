@@ -3,5 +3,5 @@ interface Props {
 }
 
 export const Divider: React.FC = ({ side = 'b' }: Props) => {
-  return <div className={`border-${side}`} />;
+  return <div className={`border-${side} border-t`} />;
 };
