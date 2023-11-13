@@ -9,3 +9,9 @@
     background: linear-gradient(to right, #1cb5e0, #000046);
   }
 }
+
+@layer utilities {
+  .toggle-btn {
+    @apply [&>div::before]:translate-y-0 [&>div::before]:rotate-45 [&>div::after]:translate-y-0 [&>div::after]:-rotate-45 [&>div]:bg-transparent [&>div]:rotate-[720deg];
+  }
+}
