@@ -56,12 +56,9 @@ export const Navbar = () => {
         id='mobile-menu'
         className={`absolute top-68 bg-black w-full text-5xl ${
           isMenuShow ? 'flex' : 'hidden'
-        } flex-col justify-center origin-top animate-open-menu`}
+        } flex-col justify-center origin-top animate-open-menu section-min-height overflow-hidden`}
       >
-        <nav
-          className='flex flex-col min-h-screen items-center py-8'
-          area-label='mobile'
-        >
+        <nav className='flex flex-col items-center py-8' area-label='mobile'>
           {links.map((l, index) => (
             <Link
               key={`${l.href}${l.text}${index}`}
