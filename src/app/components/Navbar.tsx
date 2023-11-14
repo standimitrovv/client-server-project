@@ -32,7 +32,7 @@ export const Navbar = () => {
 
   const isMobile = !useMediaQuery('768');
 
-  const pages = useCallback(
+  const renderLinks = useCallback(
     (additionalStyles?: string, onClick?: () => void) =>
       links.map((l, index) => (
         <Link
@@ -62,13 +62,15 @@ export const Navbar = () => {
             onClick={() => setIsMenuShown(!isMenuShown)}
           />
 
-          <nav className='hidden md:block space-x-8 text-xl'>{pages()}</nav>
+          <nav className='hidden md:block space-x-8 text-xl'>
+            {renderLinks()}
+          </nav>
         </div>
       </section>
 
       {isMenuShown && isMobile && (
         <MobileMenu>
-          {pages('w-full text-center py-6', () => setIsMenuShown(false))}
+          {renderLinks('w-full text-center py-6', () => setIsMenuShown(false))}
         </MobileMenu>
       )}
     </header>
