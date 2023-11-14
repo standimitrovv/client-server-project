@@ -1,10 +1,16 @@
 'use client';
+import { Permanent_Marker } from 'next/font/google';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import { PAGE_WIDTH } from '../CommonStyles';
 import { useMediaQuery } from '../hooks/UseMediaQuery';
 import { HamburgerButton } from './HamburgerButton';
 import { MobileMenu } from './MobileMenu';
+
+const permanentMarkerFont = Permanent_Marker({
+  subsets: ['latin'],
+  weight: '400',
+});
 
 const links = [
   {
@@ -46,7 +52,9 @@ export const Navbar = () => {
       <section
         className={`${PAGE_WIDTH} max-w-4xl mx-auto p-4 flex justify-between items-center`}
       >
-        <Link href='/'>Stanimir Dimitrov</Link>
+        <Link href='/' className={`${permanentMarkerFont.className}`}>
+          Stanimir Dimitrov
+        </Link>
 
         <div>
           <HamburgerButton
