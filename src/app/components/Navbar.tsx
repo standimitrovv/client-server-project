@@ -1,7 +1,7 @@
 'use client';
 import { Permanent_Marker } from 'next/font/google';
 import Link from 'next/link';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { PAGE_WIDTH } from '../CommonStyles';
 import { useMediaQuery } from '../hooks/UseMediaQuery';
 import { HamburgerButton } from './HamburgerButton';
@@ -46,6 +46,12 @@ export const Navbar = () => {
       )),
     []
   );
+
+  useEffect(() => {
+    if (!isMobile && isMenuShown) {
+      setIsMenuShown(false);
+    }
+  }, [isMenuShown, isMobile]);
 
   return (
     <header className='relative'>
