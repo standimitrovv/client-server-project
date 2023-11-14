@@ -1,6 +1,7 @@
 'use client';
 import { Permanent_Marker } from 'next/font/google';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { PAGE_WIDTH } from '../CommonStyles';
 import { useMediaQuery } from '../hooks/UseMediaQuery';
@@ -32,19 +33,23 @@ export const Navbar = () => {
 
   const isMobile = !useMediaQuery('768');
 
+  const path = usePathname();
+
   const renderLinks = useCallback(
     (additionalStyles?: string, onClick?: () => void) =>
       links.map((l, index) => (
         <Link
           key={`${l.href}${l.text}${index}`}
           href={l.href}
-          className={`${additionalStyles} hover:opacity-90`}
+          className={`${additionalStyles} ${
+            path === l.href ? 'text-blue-400' : ''
+          } hover:opacity-90`}
           onClick={onClick}
         >
           {l.text}
         </Link>
       )),
-    []
+    [path]
   );
 
   useEffect(() => {
