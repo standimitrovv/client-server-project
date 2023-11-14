@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import { PAGE_WIDTH } from '../CommonStyles';
+import { useMediaQuery } from '../hooks/UseMediaQuery';
 import { HamburgerButton } from './HamburgerButton';
 import { MobileMenu } from './MobileMenu';
 
@@ -21,7 +22,9 @@ const links = [
 ];
 
 export const Navbar = () => {
-  const [isMenuShow, setIsMenuShown] = useState<boolean>(false);
+  const [isMenuShown, setIsMenuShown] = useState<boolean>(false);
+
+  const isMobile = !useMediaQuery('768');
 
   const pages = useCallback(
     (additionalStyles?: string, onClick?: () => void) =>
@@ -47,15 +50,15 @@ export const Navbar = () => {
 
         <div>
           <HamburgerButton
-            triggerAnimation={isMenuShow}
-            onClick={() => setIsMenuShown(!isMenuShow)}
+            triggerAnimation={isMenuShown}
+            onClick={() => setIsMenuShown(!isMenuShown)}
           />
 
           <nav className='hidden md:block space-x-8 text-xl'>{pages()}</nav>
         </div>
       </section>
 
-      {isMenuShow && (
+      {isMenuShown && isMobile && (
         <MobileMenu>
           {pages('w-full text-center py-6', () => setIsMenuShown(false))}
         </MobileMenu>
