@@ -12,7 +12,7 @@ interface Props {
 export const Comment: React.FunctionComponent<Props> = ({ comment }) => {
   return (
     <li className='mb-4 flex'>
-      <Image src={img} alt='profile-pic' width={80} className='rounded-full' />
+      <Image src={img} alt='profile-pic' width={60} />
 
       <div className='flex flex-col'>
         <div className='flex items-center'>

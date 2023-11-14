@@ -8,9 +8,6 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      screens: {
-        xs: '350px',
-      },
       keyframes: {
         'open-menu': {
           '0%': {
