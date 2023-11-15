@@ -42,8 +42,8 @@ export const Navbar = () => {
           key={`${l.href}${l.text}${index}`}
           href={l.href}
           className={`${additionalStyles} ${
-            path === l.href ? 'text-blue-400' : ''
-          } hover:opacity-90`}
+            path === l.href ? 'border-b' : ''
+          } hover:border-b py-1`}
           onClick={onClick}
         >
           {l.text}

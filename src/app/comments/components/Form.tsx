@@ -55,7 +55,7 @@ export const Form: React.FunctionComponent<Props> = ({ onSubmit }) => {
         type='button'
         disabled={isSubmitButtonDisabled}
         className={`border rounded-md py-2 ${
-          isSubmitButtonDisabled ? 'bg-gray-400 text-black' : 'bg-green-300'
+          isSubmitButtonDisabled ? 'bg-gray-400 text-black' : 'bg-green-400'
         }`}
       >
         Add
