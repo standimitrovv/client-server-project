@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @layer utilities {
-  .section-min-height {
-    min-height: calc(100vh - 68px);
+  .mobile-menu-height {
+    min-height: calc(100vh - 65.6px);
   }
 
   .toggle-btn {

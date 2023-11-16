@@ -20,7 +20,11 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={`${inter.className} bg-gray-800 text-white text-md font-medium`}
+        className={`${
+          inter.className
+        } bg-gray-800 text-white text-md font-medium ${
+          true ? 'h-screen overflow-hidden' : 'h-full'
+        }`}
       >
         <Navbar />
 
