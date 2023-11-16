@@ -4,7 +4,6 @@ import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import { PAGE_WIDTH } from './CommonStyles';
 import { CommentsProvider } from './comments/state/CommentsProvider';
-import { Divider } from './components/Divider';
 import { Navbar } from './components/Navbar';
 import './globals.css';
 import { MobileMenuProvider } from './state/MobileMenuProvider';
@@ -29,8 +28,6 @@ export default function RootLayout({
           }`}
         >
           <Navbar />
-
-          <Divider />
 
           <main className={`${PAGE_WIDTH} mt-8`}>
             <CommentsProvider>{children}</CommentsProvider>
