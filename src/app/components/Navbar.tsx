@@ -2,9 +2,9 @@
 import { Permanent_Marker } from 'next/font/google';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { PAGE_WIDTH } from '../CommonStyles';
-import { useMediaQuery } from '../hooks/UseMediaQuery';
+import { useMobileMenu } from '../state/MobileMenuProvider';
 import { HamburgerButton } from './HamburgerButton';
 import { MobileMenu } from './MobileMenu';
 
@@ -29,9 +29,7 @@ const links = [
 ];
 
 export const Navbar = () => {
-  const [isMenuShown, setIsMenuShown] = useState<boolean>(false);
-
-  const isMobile = !useMediaQuery('768');
+  const { isMenuOpen, toggleMenu, closeMenu } = useMobileMenu();
 
   const path = usePathname();
 
@@ -52,12 +50,6 @@ export const Navbar = () => {
     [path]
   );
 
-  useEffect(() => {
-    if (!isMobile && isMenuShown) {
-      setIsMenuShown(false);
-    }
-  }, [isMenuShown, isMobile]);
-
   return (
     <header className='relative'>
       <section
@@ -68,18 +60,15 @@ export const Navbar = () => {
         </Link>
 
         <div>
-          <HamburgerButton
-            triggerAnimation={isMenuShown}
-            onClick={() => setIsMenuShown(!isMenuShown)}
-          />
+          <HamburgerButton triggerAnimation={isMenuOpen} onClick={toggleMenu} />
 
           <nav className='hidden md:block space-x-8'>{renderLinks()}</nav>
         </div>
       </section>
 
-      {isMenuShown && isMobile && (
+      {isMenuOpen && (
         <MobileMenu>
-          {renderLinks('w-full text-center py-6', () => setIsMenuShown(false))}
+          {renderLinks('w-full text-center py-6', closeMenu)}
         </MobileMenu>
       )}
     </header>
