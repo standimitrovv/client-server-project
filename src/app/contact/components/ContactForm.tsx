@@ -56,7 +56,7 @@ export const ContactForm = () => {
       <textarea
         name='message'
         id='message'
-        placeholder='What are your thoughts?'
+        placeholder='What do you want to tell/ask me?'
         rows={4}
         cols={20}
         className='rounded-md mb-6 text-black p-2'
