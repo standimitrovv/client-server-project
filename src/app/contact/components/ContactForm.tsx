@@ -1,5 +1,6 @@
 'use client';
 
+import { useSendEmail } from '@/app/hooks/UseSendEmal';
 import { useState } from 'react';
 
 export const ContactForm = () => {
@@ -9,17 +10,27 @@ export const ContactForm = () => {
 
   const [message, setMessage] = useState<string>('');
 
+  const { sendEmail } = useSendEmail();
+
   const isSubmitButtonDisabled =
     !fullName || !email || !message || !!message.match('^\\s+$');
 
-  const handleFormSubmit = () => {
+  const resetFormFields = () => {
     setFullName('');
 
     setEmail('');
 
     setMessage('');
+  };
 
-    // send email
+  const handleFormSubmit = async () => {
+    try {
+      await sendEmail({ from: fullName, message, senderEmail: email });
+
+      resetFormFields();
+    } catch (error) {
+      console.warn(error);
+    }
   };
 
   return (
