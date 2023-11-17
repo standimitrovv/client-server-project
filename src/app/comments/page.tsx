@@ -11,7 +11,7 @@ export default function Comments() {
   };
 
   return (
-    <section>
+    <section className='max-w-3xl m-auto'>
       <Form onSubmit={handleFormSubmit} />
 
       <ul>
