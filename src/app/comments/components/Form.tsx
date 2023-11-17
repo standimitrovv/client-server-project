@@ -28,6 +28,7 @@ export const Form: React.FunctionComponent<Props> = ({ onSubmit }) => {
         Username
       </label>
       <input
+        required
         type='text'
         id='username'
         name='username'
@@ -41,6 +42,7 @@ export const Form: React.FunctionComponent<Props> = ({ onSubmit }) => {
         Comment
       </label>
       <textarea
+        required
         name='comment'
         id='comment'
         placeholder='What are your thoughts?'

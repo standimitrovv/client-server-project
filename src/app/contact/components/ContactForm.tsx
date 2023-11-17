@@ -13,7 +13,11 @@ export const ContactForm = () => {
   const { sendEmail } = useSendEmail();
 
   const isSubmitButtonDisabled =
-    !fullName || !email || !message || !!message.match('^\\s+$');
+    !fullName ||
+    !email ||
+    !!email.match('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$') === false ||
+    !message ||
+    !!message.match('^\\s+$');
 
   const resetFormFields = () => {
     setFullName('');
@@ -42,6 +46,7 @@ export const ContactForm = () => {
         id='name'
         name='name'
         type='text'
+        required
         placeholder='What is your name?'
         className='mb-6 rounded-md text-black p-2'
         value={fullName}
@@ -55,6 +60,7 @@ export const ContactForm = () => {
         id='email'
         name='email'
         type='email'
+        required
         placeholder='What is your email?'
         className='mb-6 rounded-md text-black p-2'
         value={email}
@@ -65,6 +71,7 @@ export const ContactForm = () => {
         Message
       </label>
       <textarea
+        required
         name='message'
         id='message'
         placeholder='What do you want to tell/ask me?'
