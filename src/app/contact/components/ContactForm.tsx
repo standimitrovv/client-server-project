@@ -1,0 +1,79 @@
+'use client';
+
+import { useState } from 'react';
+
+export const ContactForm = () => {
+  const [fullName, setFullName] = useState<string>('');
+
+  const [email, setEmail] = useState<string>('');
+
+  const [message, setMessage] = useState<string>('');
+
+  const isSubmitButtonDisabled =
+    !fullName || !email || !message || !!message.match('^\\s+$');
+
+  const handleFormSubmit = () => {
+    setFullName('');
+
+    setEmail('');
+
+    setMessage('');
+
+    // send email
+  };
+
+  return (
+    <form onSubmit={(e) => e.preventDefault()} className='flex flex-col'>
+      <label htmlFor='name' className='mb-2'>
+        Full Name
+      </label>
+      <input
+        id='name'
+        name='name'
+        type='text'
+        placeholder='What is your name?'
+        className='mb-6 rounded-md text-black p-2'
+        value={fullName}
+        onChange={(e) => setFullName(e.target.value)}
+      />
+
+      <label htmlFor='email' className='mb-2'>
+        E-mail
+      </label>
+      <input
+        id='email'
+        name='email'
+        type='email'
+        placeholder='What is your email?'
+        className='mb-6 rounded-md text-black p-2'
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <label htmlFor='message' className='mb-2'>
+        Message
+      </label>
+      <textarea
+        name='message'
+        id='message'
+        placeholder='What are your thoughts?'
+        rows={4}
+        cols={20}
+        className='rounded-md mb-6 text-black p-2'
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      />
+
+      <button
+        type='submit'
+        disabled={isSubmitButtonDisabled}
+        onClick={handleFormSubmit}
+        className={`border rounded-md py-2 ${
+          isSubmitButtonDisabled ? 'bg-gray-400 text-black' : 'bg-green-400'
+        }`}
+      >
+        Send
+      </button>
+    </form>
+  );
+};
