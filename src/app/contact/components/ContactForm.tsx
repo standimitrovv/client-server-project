@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { Contact } from '../models/Contact';
+import { LoadingSpinner } from './LoadingSpinner';
 
 interface Props {
-  onFormSubmit: (contact: Contact) => void;
+  onFormSubmit: (contact: Contact) => Promise<void>;
 }
 
 export const ContactForm: React.FunctionComponent<Props> = ({
@@ -16,12 +17,15 @@ export const ContactForm: React.FunctionComponent<Props> = ({
 
   const [message, setMessage] = useState<string>('');
 
+  const [isSubmittingForm, setIsSubmittingForm] = useState<boolean>(false);
+
   const isSubmitButtonDisabled =
     !fullName ||
     !email ||
     !!email.match('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$') === false ||
     !message ||
-    !!message.match('^\\s+$');
+    !!message.match('^\\s+$') ||
+    isSubmittingForm;
 
   const resetFormFields = () => {
     setFullName('');
@@ -32,9 +36,11 @@ export const ContactForm: React.FunctionComponent<Props> = ({
   };
 
   const handleFormSubmit = () => {
-    onFormSubmit({ from: fullName, message, senderEmail: email });
+    setIsSubmittingForm(true);
 
-    resetFormFields();
+    onFormSubmit({ from: fullName, message, senderEmail: email })
+      .then(resetFormFields)
+      .finally(() => setIsSubmittingForm(false));
   };
 
   return (
@@ -51,6 +57,7 @@ export const ContactForm: React.FunctionComponent<Props> = ({
         className='mb-6 rounded-md text-black p-2'
         value={fullName}
         onChange={(e) => setFullName(e.target.value)}
+        disabled={isSubmittingForm}
       />
 
       <label htmlFor='email' className='mb-2'>
@@ -65,6 +72,7 @@ export const ContactForm: React.FunctionComponent<Props> = ({
         className='mb-6 rounded-md text-black p-2'
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        disabled={isSubmittingForm}
       />
 
       <label htmlFor='message' className='mb-2'>
@@ -80,6 +88,7 @@ export const ContactForm: React.FunctionComponent<Props> = ({
         className='rounded-md mb-6 text-black p-2'
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        disabled={isSubmittingForm}
       />
 
       <button
@@ -90,7 +99,13 @@ export const ContactForm: React.FunctionComponent<Props> = ({
           isSubmitButtonDisabled ? 'bg-gray-400 text-black' : 'bg-green-400'
         }`}
       >
-        Send
+        {!isSubmittingForm ? (
+          'Send'
+        ) : (
+          <div className='flex justify-center'>
+            <LoadingSpinner />
+          </div>
+        )}
       </button>
     </form>
   );
