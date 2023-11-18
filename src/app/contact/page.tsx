@@ -1,7 +1,7 @@
 'use client';
 
 import { useNotifications } from '../hooks/UseNotifications';
-import { useSendEmail } from '../hooks/UseSendEmal';
+import { useSendEmail } from '../hooks/UseSendEmail';
 import { ContactForm } from './components/ContactForm';
 
 export default function Contact() {
