@@ -3,6 +3,7 @@
 import { useNotifications } from '../hooks/UseNotifications';
 import { useSendEmail } from '../hooks/UseSendEmail';
 import { ContactForm } from './components/ContactForm';
+import { Contact } from './models/Contact';
 
 export default function Contact() {
   const { sendEmail } = useSendEmail();
@@ -10,11 +11,7 @@ export default function Contact() {
   const { createSuccessNotification, createErrorNotification } =
     useNotifications();
 
-  const onFormSubmit = async (
-    from: string,
-    message: string,
-    senderEmail: string
-  ) => {
+  const onFormSubmit = async ({ from, message, senderEmail }: Contact) => {
     try {
       await sendEmail({ from, message, senderEmail });
 

@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { Contact } from '../models/Contact';
 
 interface Props {
-  onFormSubmit: (from: string, message: string, senderEmail: string) => void;
+  onFormSubmit: (contact: Contact) => void;
 }
 
 export const ContactForm: React.FunctionComponent<Props> = ({
@@ -31,7 +32,7 @@ export const ContactForm: React.FunctionComponent<Props> = ({
   };
 
   const handleFormSubmit = () => {
-    onFormSubmit(fullName, message, email);
+    onFormSubmit({ from: fullName, message, senderEmail: email });
 
     resetFormFields();
   };
