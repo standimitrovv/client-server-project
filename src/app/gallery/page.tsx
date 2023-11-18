@@ -13,7 +13,7 @@ const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9];
 
 export default function Gallery() {
   return (
-    <section id='gallery'>
+    <section id='gallery' className='mb-8'>
       <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
         {images.map((i, index) => (
           <Image

@@ -6,7 +6,7 @@ import picOfMe from './images/me.jpg';
 export default function Home() {
   return (
     <section
-      id='Home page'
+      id='home'
       className='flex flex-col md:flex-row md:justify-between w-full mb-8'
     >
       <div className='w-full md:w-[80%]'>

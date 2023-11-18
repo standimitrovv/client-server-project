@@ -22,7 +22,7 @@ export default function Contact() {
   };
 
   return (
-    <section className='max-w-3xl m-auto'>
+    <section id='contact' className='max-w-3xl m-auto'>
       <ContactForm onFormSubmit={onFormSubmit} />
     </section>
   );
