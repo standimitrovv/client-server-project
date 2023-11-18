@@ -1,5 +1,6 @@
 'use client';
 
+import { useNotifications } from '@/app/hooks/UseNotifications';
 import { useSendEmail } from '@/app/hooks/UseSendEmal';
 import { useState } from 'react';
 
@@ -11,6 +12,9 @@ export const ContactForm = () => {
   const [message, setMessage] = useState<string>('');
 
   const { sendEmail } = useSendEmail();
+
+  const { createSuccessNotification, createErrorNotification } =
+    useNotifications();
 
   const isSubmitButtonDisabled =
     !fullName ||
@@ -32,8 +36,10 @@ export const ContactForm = () => {
       await sendEmail({ from: fullName, message, senderEmail: email });
 
       resetFormFields();
+
+      createSuccessNotification('Email successfully sent!');
     } catch (error) {
-      console.warn(error);
+      createErrorNotification('Something went wrong with sending the email...');
     }
   };
 
