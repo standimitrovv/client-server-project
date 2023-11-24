@@ -11,24 +11,30 @@ interface Props {
 
 export const Comment: React.FunctionComponent<Props> = ({ comment }) => {
   return (
-    <li className='mb-4 flex'>
-      <Image src={img} alt='profile-pic' width={60} />
+    <li className='mb-4 flex justify-between items-center'>
+      <div className='flex'>
+        <Image src={img} alt='profile-pic' width={60} />
 
-      <div className='flex flex-col'>
-        <div className='flex items-center'>
-          <span className='font-semibold mr-2'>{`@${comment.username}`}</span>
-          <TimeAgo
-            date={comment.date}
-            minPeriod={10}
-            className='text-gray-200 text-sm'
-          />
-        </div>
-        <div className='grid grid-cols-1'>
-          <span className='text-ellipsis overflow-hidden whitespace-nowrap'>
-            {comment.text}
-          </span>
+        <div className='flex flex-col'>
+          <div className='flex items-center'>
+            <span className='font-semibold mr-2'>{`@${comment.username}`}</span>
+            <TimeAgo
+              date={comment.date}
+              minPeriod={10}
+              className='text-gray-200 text-sm'
+            />
+          </div>
+          <div className='grid grid-cols-1'>
+            <span className='text-ellipsis overflow-hidden whitespace-nowrap'>
+              {comment.text}
+            </span>
+          </div>
         </div>
       </div>
+
+      <span className='cursor-pointer p-2' title='Delete comment'>
+        &#x2715;
+      </span>
     </li>
   );
 };
