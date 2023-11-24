@@ -7,9 +7,13 @@ import { IComment } from '../models/Comment';
 
 interface Props {
   comment: IComment;
+  deleteComment: () => void;
 }
 
-export const Comment: React.FunctionComponent<Props> = ({ comment }) => {
+export const Comment: React.FunctionComponent<Props> = ({
+  comment,
+  deleteComment,
+}) => {
   return (
     <li className='mb-4 flex justify-between items-center'>
       <div className='flex'>
@@ -32,7 +36,11 @@ export const Comment: React.FunctionComponent<Props> = ({ comment }) => {
         </div>
       </div>
 
-      <span className='cursor-pointer p-2' title='Delete comment'>
+      <span
+        className='cursor-pointer p-2'
+        title='Delete comment'
+        onClick={deleteComment}
+      >
         &#x2715;
       </span>
     </li>

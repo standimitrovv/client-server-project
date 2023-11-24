@@ -6,7 +6,7 @@ import { useComments } from './state/CommentsProvider';
 import { generateId } from './utils/GenerateId';
 
 export default function Comments() {
-  const { comments, addNewComment } = useComments();
+  const { comments, addNewComment, deleteComment } = useComments();
 
   const { createSuccessNotification } = useNotifications();
 
@@ -21,8 +21,12 @@ export default function Comments() {
       <Form onSubmit={handleFormSubmit} />
 
       <ul>
-        {comments.map((c, index) => (
-          <Comment key={`${c.text}${c.username}${index}`} comment={c} />
+        {comments.map((c) => (
+          <Comment
+            key={c.id}
+            comment={c}
+            deleteComment={() => deleteComment(c.id)}
+          />
         ))}
       </ul>
     </section>
