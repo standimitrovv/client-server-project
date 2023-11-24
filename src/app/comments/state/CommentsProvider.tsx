@@ -6,11 +6,13 @@ import { IComment } from '../models/Comment';
 interface ICommentsContext {
   comments: IComment[];
   addNewComment: (comment: IComment) => void;
+  removeComment: (commentId: string) => void;
 }
 
 const CommentsContext = createContext<ICommentsContext>({
   comments: [],
   addNewComment: () => {},
+  removeComment: () => {},
 });
 
 export const useComments = () => useContext(CommentsContext);
@@ -26,9 +28,14 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
     setComments((prevState) => [...prevState, comment]);
   };
 
+  const removeComment = (commentId: string) => {
+    setComments((prevState) => prevState.filter((c) => c.id !== commentId));
+  };
+
   const context = {
     comments,
     addNewComment,
+    removeComment,
   };
 
   return (
