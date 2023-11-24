@@ -2,7 +2,7 @@ import { ToastContainerProps, toast } from 'react-toastify';
 
 const commonProps: ToastContainerProps = {
   position: 'bottom-left',
-  autoClose: 5000,
+  autoClose: 4000,
   closeOnClick: true,
   pauseOnHover: true,
   theme: 'light',
