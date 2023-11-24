@@ -16,6 +16,12 @@ export default function Comments() {
     createSuccessNotification('Comment successfully added!');
   };
 
+  const handleCommentDelete = (commentId: string) => {
+    deleteComment(commentId);
+
+    createSuccessNotification('Comment successfully deleted!');
+  };
+
   return (
     <section id='comments' className='max-w-3xl m-auto'>
       <Form onSubmit={handleFormSubmit} />
@@ -25,7 +31,7 @@ export default function Comments() {
           <Comment
             key={c.id}
             comment={c}
-            deleteComment={() => deleteComment(c.id)}
+            deleteComment={() => handleCommentDelete(c.id)}
           />
         ))}
       </ul>
