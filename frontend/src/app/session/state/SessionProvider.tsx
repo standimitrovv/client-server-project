@@ -1,4 +1,11 @@
-import { createContext, useCallback, useState } from 'react';
+import Cookies from 'js-cookie';
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { LoginModel, LoginResponse, loginRequest } from '../api/Login';
 import { AuthenticationForm } from '../components/AuthenticationForm';
 
@@ -41,6 +48,8 @@ export const SessionProvider: React.FunctionComponent<Props> = (props) => {
     const res = await loginRequest(req);
 
     if (!res.ok) {
+      //TODO: display a snackbar
+
       return;
     }
 
@@ -48,13 +57,22 @@ export const SessionProvider: React.FunctionComponent<Props> = (props) => {
 
     setUser(loginResponse);
 
-    // TODO: set the token as a cookie
+    Cookies.set('user', JSON.stringify(loginResponse), { expires: 1 });
   }, []);
 
-  // TODO: get the user from the cookie if it has already been set
-  //   useEffect(() => {}, [])
+  useEffect(() => {
+    const userCookieData = Cookies.get('user');
 
-  const isLoggedIn = user?.token;
+    if (!userCookieData) {
+      return;
+    }
+
+    const parsedCookieUser = JSON.parse(userCookieData) as LoginResponse;
+
+    setUser(parsedCookieUser);
+  }, []);
+
+  const isLoggedIn = useMemo(() => user?.token, [user]);
 
   const context: Session = {
     isSigningIn,
