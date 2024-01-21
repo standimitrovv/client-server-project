@@ -1,7 +1,6 @@
 ﻿using API.Dto;
 using API.Dto.DtoResponse;
 using API.Repository.User;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
