@@ -8,5 +8,7 @@ namespace API.Repository.User
         Task<LoginResponseDto> Login(UserLoginDto loginDto);
 
         Task<UserDto> Register(UserRegisterDto registerDto);
+
+        bool isUniqueUser(string username);
     }
 }

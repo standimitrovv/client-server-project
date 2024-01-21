@@ -47,6 +47,13 @@ namespace API.Repository.User
 
         }
 
+        public bool isUniqueUser(string username)
+        {
+            var user = _db.Users.FirstOrDefault(u => u.UserName == username);
+
+            return user == null ? true : false;
+        }
+
         public async Task<LoginResponseDto> Login(UserLoginDto loginDto)
         {
 
@@ -83,9 +90,32 @@ namespace API.Repository.User
             };
         }
 
-        public Task<UserDto> Register(UserRegisterDto registerDto)
+        public async Task<UserDto> Register(UserRegisterDto registerDto)
         {
-            throw new NotImplementedException();
+            var user = new ApplicationUser()
+            {
+                UserName = registerDto.Username,
+                Email = registerDto.Email,
+                NormalizedEmail = registerDto.Email.ToUpper(),
+                Name = registerDto.Name,
+            };
+
+            try
+            {
+                var result = await _userManager.CreateAsync(user, registerDto.Password);
+
+                if (result.Succeeded)
+                {
+                    var userToReturn = _db.Users.FirstOrDefault(u => u.UserName == registerDto.Username);
+
+                    return _mapper.Map<UserDto>(userToReturn);
+                }
+            } catch (Exception ex)
+            {
+
+            }
+
+            return new UserDto();
         }
     }
 }

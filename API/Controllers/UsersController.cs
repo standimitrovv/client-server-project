@@ -30,5 +30,29 @@ namespace API.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
+        public async Task<ActionResult<UserDto>> Register([FromBody] UserRegisterDto registerDto)
+        {
+            var isUniqueUser = _userRepo.isUniqueUser(registerDto.Username);
+
+            if(!isUniqueUser)
+            {
+                return Conflict(registerDto);
+            }
+
+            var user = await _userRepo.Register(registerDto);
+
+            if(user == null)
+            {
+                return BadRequest(user);
+            }
+
+            return Ok(user);
+        }
     }
 }
