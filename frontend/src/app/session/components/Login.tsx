@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { LoginModel } from '../api/Login';
 import { useSessionContext } from '../state/UseSessionContext';
 
 export const Login = () => {
-  const { openSignUpPage } = useSessionContext();
+  const { openSignUpPage, login } = useSessionContext();
 
   return (
     <div className='flex flex-col'>
@@ -13,7 +14,7 @@ export const Login = () => {
         Please sign in to your account
       </span>
 
-      <LoginForm submitForm={() => {}} />
+      <LoginForm submitForm={login} />
 
       <span
         className='mt-8 text-blue-400 cursor-pointer'
@@ -25,12 +26,20 @@ export const Login = () => {
   );
 };
 
-const LoginForm: React.FunctionComponent<{ submitForm: () => void }> = ({
-  submitForm,
-}) => {
+const LoginForm: React.FunctionComponent<{
+  submitForm: (req: LoginModel) => Promise<void>;
+}> = ({ submitForm }) => {
   const [username, setUsername] = useState<string>('');
 
   const [password, setPassword] = useState<string>('');
+
+  const handleFormSubmit = async () => {
+    try {
+      await submitForm({ username, password });
+    } catch (err) {
+      // TODO: handle the error
+    }
+  };
 
   return (
     <form className='flex flex-col gap-3' onSubmit={(e) => e.preventDefault()}>
@@ -52,7 +61,7 @@ const LoginForm: React.FunctionComponent<{ submitForm: () => void }> = ({
       />
       <button
         className='bg-blue-500 py-2 rounded-md mt-3 outline-none'
-        onClick={submitForm}
+        onClick={handleFormSubmit}
       >
         Sign in
       </button>

@@ -59,7 +59,7 @@ namespace API.Repository.User
 
             var user = await CheckUserLoginCredentials(loginDto);
 
-            if(user == null)
+            if(user.Id == null)
             {
                 return new LoginResponseDto()
                 {
