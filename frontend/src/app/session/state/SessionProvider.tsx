@@ -71,7 +71,7 @@ export const SessionProvider: React.FunctionComponent<Props> = (props) => {
     const res = await registerRequest(req);
 
     if (res.statusCode < 200 || res.statusCode > 226) {
-      createErrorNotification('Something went wrong with signing you in');
+      createErrorNotification('Something went wrong with signing you up');
 
       return;
     }
