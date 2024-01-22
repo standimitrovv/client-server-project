@@ -11,6 +11,7 @@ import './globals.css';
 import { useNotifications } from './hooks/UseNotifications';
 import { SessionProvider } from './session/state/SessionProvider';
 import { MobileMenuProvider } from './state/MobileMenuProvider';
+import { ThemeProvider } from './state/ThemeProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -33,13 +34,15 @@ export default function RootLayout({
             isMenuOpen ? 'h-screen overflow-hidden' : 'h-full'
           }`}
         >
-          <SessionProvider>
-            <Navbar />
+          <ThemeProvider>
+            <SessionProvider>
+              <Navbar />
 
-            <main className={`${PAGE_WIDTH} mt-8`}>
-              <CommentsProvider>{children}</CommentsProvider>
-            </main>
-          </SessionProvider>
+              <main className={`${PAGE_WIDTH} mt-8`}>
+                <CommentsProvider>{children}</CommentsProvider>
+              </main>
+            </SessionProvider>
+          </ThemeProvider>
         </body>
 
         <ToastContainer {...containerConfiguration} />

@@ -20,9 +20,21 @@ const config: Config = {
             transform: 'scaleY(1)',
           },
         },
+        cursor: {
+          '50%': {
+            borderColor: 'transparent',
+          },
+        },
+        typing: {
+          from: {
+            width: '0',
+          },
+        },
       },
       animation: {
         'open-menu': 'open-menu 0.5s ease-in-out forwards',
+        'typing-cursor':
+          'typing 2s steps(17), cursor .4s step-end infinite alternate',
       },
     },
   },
