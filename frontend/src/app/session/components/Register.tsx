@@ -1,5 +1,6 @@
 'use client';
 
+import { LoadingSpinner } from '@/app/contact/components/LoadingSpinner';
 import { useState } from 'react';
 import { RegisterModel } from '../api/Register';
 import { useSessionContext } from '../state/UseSessionContext';
@@ -35,11 +36,16 @@ const RegisterForm: React.FunctionComponent<{
 
   const [password, setPassword] = useState<string>('');
 
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   const handleFormSubmit = async () => {
+    setIsSubmitting(true);
     try {
       await submitForm({ username, password, email });
     } catch (err) {
       // TODO: handle the error
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -53,6 +59,7 @@ const RegisterForm: React.FunctionComponent<{
         required
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        disabled={isSubmitting}
       />
 
       <label htmlFor='email'>E-mail</label>
@@ -63,6 +70,7 @@ const RegisterForm: React.FunctionComponent<{
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        disabled={isSubmitting}
       />
 
       <label htmlFor='password'>Password</label>
@@ -73,12 +81,14 @@ const RegisterForm: React.FunctionComponent<{
         required
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        disabled={isSubmitting}
       />
       <button
-        className='bg-blue-500 py-2 rounded-md mt-3 outline-none'
+        className='bg-blue-500 py-2 rounded-md mt-3 outline-none flex justify-center'
         onClick={handleFormSubmit}
+        disabled={isSubmitting}
       >
-        Sign up
+        {isSubmitting ? <LoadingSpinner /> : 'Sign up'}
       </button>
     </form>
   );

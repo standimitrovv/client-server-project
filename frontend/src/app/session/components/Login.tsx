@@ -1,5 +1,6 @@
 'use client';
 
+import { LoadingSpinner } from '@/app/contact/components/LoadingSpinner';
 import { useState } from 'react';
 import { LoginModel } from '../api/Login';
 import { useSessionContext } from '../state/UseSessionContext';
@@ -33,12 +34,16 @@ const LoginForm: React.FunctionComponent<{
 
   const [password, setPassword] = useState<string>('');
 
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   const handleFormSubmit = async () => {
+    setIsSubmitting(true);
     try {
       await submitForm({ username, password });
     } catch (err) {
       // TODO: handle the error
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -50,6 +55,7 @@ const LoginForm: React.FunctionComponent<{
         id='username'
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        disabled={isSubmitting}
       />
       <label htmlFor='password'>Password</label>
       <input
@@ -58,12 +64,14 @@ const LoginForm: React.FunctionComponent<{
         id='password'
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        disabled={isSubmitting}
       />
       <button
-        className='bg-blue-500 py-2 rounded-md mt-3 outline-none'
+        className='bg-blue-500 py-2 rounded-md mt-3 outline-none flex justify-center'
         onClick={handleFormSubmit}
+        disabled={isSubmitting}
       >
-        Sign in
+        {isSubmitting ? <LoadingSpinner /> : 'Sign in'}
       </button>
     </form>
   );

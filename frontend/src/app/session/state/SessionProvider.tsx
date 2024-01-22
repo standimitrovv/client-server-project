@@ -9,7 +9,6 @@ import {
 } from 'react';
 import { LoginModel, LoginResponse, loginRequest } from '../api/Login';
 import { RegisterModel, registerRequest } from '../api/Register';
-import { AuthenticationForm } from '../components/AuthenticationForm';
 
 const IS_SIGNING_IN_DEFAULT_VALUE = true;
 
@@ -109,7 +108,8 @@ export const SessionProvider: React.FunctionComponent<Props> = (props) => {
 
   return (
     <SessionContext.Provider value={context}>
-      {isLoggedIn ? props.children : <AuthenticationForm />}
+      {props.children}
+      {/* {isLoggedIn ? props.children : <AuthenticationForm />} */}
     </SessionContext.Provider>
   );
 };
