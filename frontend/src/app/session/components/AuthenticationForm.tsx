@@ -6,8 +6,10 @@ export const AuthenticationForm = () => {
   const { isSigningIn } = useSessionContext();
 
   return (
-    <div className='max-w-xl m-auto p-16 border rounded-md'>
-      {isSigningIn ? <Login /> : <Register />}
+    <div className='max-w-xl m-auto h-screen flex flex-col justify-center items-center'>
+      <div className='h-fit p-16 border rounded-md w-full'>
+        {isSigningIn ? <Login /> : <Register />}
+      </div>
     </div>
   );
 };
