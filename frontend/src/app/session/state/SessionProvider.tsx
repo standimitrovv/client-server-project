@@ -13,6 +13,10 @@ import { AuthenticationForm } from '../components/AuthenticationForm';
 
 const IS_SIGNING_IN_DEFAULT_VALUE = true;
 
+const DEFAULT_SIGN_IN_FAIL_TEXT = 'Something went wrong with signing you in';
+
+const DEFAULT_SIGN_UP_FAIL_TEXT = 'Something went wrong with signing you up';
+
 interface Session {
   isSigningIn: boolean;
   openSignInPage: () => void;
@@ -52,36 +56,44 @@ export const SessionProvider: React.FunctionComponent<Props> = (props) => {
   };
 
   const login = useCallback(async (req: LoginModel) => {
-    const res = await loginRequest(req);
+    try {
+      const res = await loginRequest(req);
 
-    if (!res.ok) {
-      createErrorNotification('Something went wrong with signing you in');
+      if (!res.ok) {
+        createErrorNotification(DEFAULT_SIGN_IN_FAIL_TEXT);
 
-      return;
+        return;
+      }
+
+      const loginResponse: LoginResponse = await res.json();
+
+      setUser(loginResponse);
+
+      Cookies.set('user', JSON.stringify(loginResponse), { expires: 1 });
+    } catch (err) {
+      createErrorNotification(DEFAULT_SIGN_IN_FAIL_TEXT);
     }
-
-    const loginResponse: LoginResponse = await res.json();
-
-    setUser(loginResponse);
-
-    Cookies.set('user', JSON.stringify(loginResponse), { expires: 1 });
   }, []);
 
   const register = useCallback(async (req: RegisterModel) => {
-    const res = await registerRequest(req);
+    try {
+      const res = await registerRequest(req);
 
-    if (res.statusCode < 200 || res.statusCode > 226) {
-      createErrorNotification('Something went wrong with signing you up');
+      if (res.statusCode < 200 || res.statusCode > 226) {
+        createErrorNotification(DEFAULT_SIGN_UP_FAIL_TEXT);
 
-      return;
-    }
+        return;
+      }
 
-    if (res.result) {
-      createSuccessNotification(
-        'Sign up completed successfully! Please, sign in now.'
-      );
+      if (res.result) {
+        createSuccessNotification(
+          'Sign up completed successfully! Please, sign in now.'
+        );
 
-      setIsSigningIn(true);
+        setIsSigningIn(true);
+      }
+    } catch (err) {
+      createErrorNotification(DEFAULT_SIGN_UP_FAIL_TEXT);
     }
   }, []);
 
