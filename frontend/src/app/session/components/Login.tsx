@@ -27,7 +27,7 @@ export const Login = () => {
 };
 
 const LoginForm: React.FunctionComponent<{
-  submitForm: (req: LoginModel) => Promise<void>;
+  submitForm: (formData: LoginModel) => Promise<void>;
 }> = ({ submitForm }) => {
   const [username, setUsername] = useState<string>('');
 

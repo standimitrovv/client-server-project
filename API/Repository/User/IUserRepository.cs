@@ -1,5 +1,6 @@
 ﻿using API.Dto;
 using API.Dto.DtoResponse;
+using API.Models;
 
 namespace API.Repository.User
 {
@@ -7,7 +8,7 @@ namespace API.Repository.User
     {
         Task<LoginResponseDto> Login(UserLoginDto loginDto);
 
-        Task<UserDto> Register(UserRegisterDto registerDto);
+        Task<APIResponse<UserDto>> Register(UserRegisterDto registerDto);
 
         bool isUniqueUser(string username);
     }

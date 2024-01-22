@@ -41,12 +41,12 @@ namespace API.Controllers
 
             if(!isUniqueUser)
             {
-                return Conflict(registerDto);
+                return Conflict();
             }
 
             var user = await _userRepo.Register(registerDto);
 
-            if(user == null)
+            if(user.Result == null)
             {
                 return BadRequest(user);
             }

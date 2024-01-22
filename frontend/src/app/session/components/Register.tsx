@@ -1,17 +1,20 @@
+'use client';
+
 import { useState } from 'react';
+import { RegisterModel } from '../api/Register';
 import { useSessionContext } from '../state/UseSessionContext';
 
 export const Register = () => {
-  const { openSignInPage } = useSessionContext();
+  const { openSignInPage, register } = useSessionContext();
 
   return (
     <div className='flex flex-col'>
       <span className='font-semibold'>Sign up</span>
       <span className='text-gray-100 text-sm mt-2 mb-6'>
-        Please create your account
+        Create your account
       </span>
 
-      <RegisterForm submitForm={() => {}} />
+      <RegisterForm submitForm={register} />
 
       <span
         className='mt-8 text-blue-400 cursor-pointer'
@@ -24,13 +27,21 @@ export const Register = () => {
 };
 
 const RegisterForm: React.FunctionComponent<{
-  submitForm: () => void;
+  submitForm: (formData: RegisterModel) => Promise<void>;
 }> = ({ submitForm }) => {
   const [username, setUsername] = useState<string>('');
 
   const [email, setEmail] = useState<string>('');
 
   const [password, setPassword] = useState<string>('');
+
+  const handleFormSubmit = async () => {
+    try {
+      await submitForm({ username, password, email });
+    } catch (err) {
+      // TODO: handle the error
+    }
+  };
 
   return (
     <form className='flex flex-col gap-3' onSubmit={(e) => e.preventDefault()}>
@@ -65,7 +76,7 @@ const RegisterForm: React.FunctionComponent<{
       />
       <button
         className='bg-blue-500 py-2 rounded-md mt-3 outline-none'
-        onClick={submitForm}
+        onClick={handleFormSubmit}
       >
         Sign up
       </button>

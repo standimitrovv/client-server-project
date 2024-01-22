@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace API.Repository.User
 {
@@ -17,6 +19,7 @@ namespace API.Repository.User
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private string secretKey;
+        private readonly APIResponse<UserDto> _apiRes;
 
         public UserRepository(ApplicationDbContext db, IConfiguration config, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
@@ -24,6 +27,7 @@ namespace API.Repository.User
             _userManager = userManager;
             _mapper = mapper;
             this.secretKey = config.GetValue<string>("ApiSettings:Secret");
+            this._apiRes = new();
         }
 
         private async Task<UserDto> CheckUserLoginCredentials(UserLoginDto loginDto)
@@ -90,32 +94,41 @@ namespace API.Repository.User
             };
         }
 
-        public async Task<UserDto> Register(UserRegisterDto registerDto)
+        public async Task<APIResponse<UserDto>> Register(UserRegisterDto registerDto)
         {
             var user = new ApplicationUser()
             {
                 UserName = registerDto.Username,
                 Email = registerDto.Email,
                 NormalizedEmail = registerDto.Email.ToUpper(),
-                Name = registerDto.Name,
+                Name = registerDto.Username.ToLower()
             };
 
             try
             {
                 var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-                if (result.Succeeded)
+                if (result.Errors.Count() > 0) 
                 {
-                    var userToReturn = _db.Users.FirstOrDefault(u => u.UserName == registerDto.Username);
+                    _apiRes.ErrorMessages = result.Errors.Select(e => e.Description).ToList();
+                    _apiRes.StatusCode = HttpStatusCode.BadRequest;
+                    _apiRes.Result = null;
 
-                    return _mapper.Map<UserDto>(userToReturn);
+                    return _apiRes;
                 }
+                var userToReturn = _db.Users.FirstOrDefault(u => u.UserName == registerDto.Username);
+
+                _apiRes.StatusCode = HttpStatusCode.OK;
+                _apiRes.Result = _mapper.Map<UserDto>(userToReturn);
+                return _apiRes;
+
             } catch (Exception ex)
             {
-
+                _apiRes.StatusCode = HttpStatusCode.BadRequest;
+                _apiRes.ErrorMessages = new List<string>() { ex.Message };
+                _apiRes.Result = null;
+                return _apiRes;
             }
-
-            return new UserDto();
         }
     }
 }
