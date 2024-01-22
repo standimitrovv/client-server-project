@@ -1,5 +1,6 @@
 using API;
 using API.Models;
+using API.Repository;
 using API.Repository.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +22,7 @@ builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 // Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

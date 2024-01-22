@@ -12,5 +12,7 @@ namespace API
         }
 
         public DbSet<ApplicationUser> Users { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
     }
 }

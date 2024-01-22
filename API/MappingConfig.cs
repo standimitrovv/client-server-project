@@ -9,6 +9,7 @@ namespace API
         public MappingConfig() 
         {
             CreateMap<ApplicationUser, UserDto>().ReverseMap();
+            CreateMap<Comment, CommentDto>().ReverseMap();
         }
     }
 }

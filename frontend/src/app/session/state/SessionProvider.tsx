@@ -10,6 +10,7 @@ import {
 import { LoginModel, LoginResponse, loginRequest } from '../api/Login';
 import { RegisterModel, registerRequest } from '../api/Register';
 import { AuthenticationForm } from '../components/AuthenticationForm';
+import { User } from '../models/User';
 
 const IS_SIGNING_IN_DEFAULT_VALUE = true;
 
@@ -18,6 +19,7 @@ const DEFAULT_SIGN_IN_FAIL_TEXT = 'Something went wrong with signing you in';
 const DEFAULT_SIGN_UP_FAIL_TEXT = 'Something went wrong with signing you up';
 
 interface Session {
+  user?: User;
   isSigningIn: boolean;
   openSignInPage: () => void;
   openSignUpPage: () => void;
@@ -26,6 +28,7 @@ interface Session {
 }
 
 export const SessionContext = createContext<Session>({
+  user: undefined,
   isSigningIn: IS_SIGNING_IN_DEFAULT_VALUE,
   openSignInPage: () => {},
   openSignUpPage: () => {},
@@ -112,6 +115,7 @@ export const SessionProvider: React.FunctionComponent<Props> = (props) => {
   const isLoggedIn = useMemo(() => user?.token, [user]);
 
   const context: Session = {
+    user: user?.user,
     isSigningIn,
     openSignInPage,
     openSignUpPage,

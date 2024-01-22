@@ -1,5 +1,6 @@
 'use client';
 
+import { useSessionContext } from '@/app/session/state/UseSessionContext';
 import { createContext, useContext, useState } from 'react';
 import { IComment } from '../models/Comment';
 
@@ -24,7 +25,22 @@ interface Props {
 export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
   const [comments, setComments] = useState<IComment[]>([]);
 
-  const addNewComment = (comment: IComment) => {
+  const { user } = useSessionContext();
+
+  const addNewComment = async (comment: IComment) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/comments`, {
+      method: 'POST',
+      body: JSON.stringify({
+        text: comment.text,
+        userId: user?.id,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log(await res.json());
+
     setComments((prevState) => [...prevState, comment]);
   };
 
