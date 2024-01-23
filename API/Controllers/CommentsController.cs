@@ -38,8 +38,17 @@ namespace API.Controllers
             try
             {
                 var comments = await _commentRepository.GetAllCommentsAsync();
-            
-                foreach(var comment in comments)
+
+                if(comments.Count == 0 || comments == null)
+                {
+                    _apiListResponse.StatusCode = HttpStatusCode.OK;
+                    _apiListResponse.Result = new List<CommentDtoResponse>();
+                    return _apiListResponse;
+                }
+
+                var sortedByCreatedDate = comments.OrderByDescending(c => c.CreatedDate).ToList();
+
+                foreach (var comment in sortedByCreatedDate)
                 {
                     var user = await _userRepository.FindUserById(comment.UserId);
 
