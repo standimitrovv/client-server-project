@@ -7,6 +7,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { createComment } from '../api/CreateComment';
@@ -18,6 +19,7 @@ const IS_PROCESSING_DEFAULT_VALUE = true;
 
 interface ICommentsContext {
   comments: IComment[];
+  userSpecificComments: IComment[];
   isProcessing: boolean;
   addNewComment: (text: string) => void;
   deleteComment: (commentId: number) => void;
@@ -25,6 +27,7 @@ interface ICommentsContext {
 
 const CommentsContext = createContext<ICommentsContext>({
   comments: [],
+  userSpecificComments: [],
   isProcessing: IS_PROCESSING_DEFAULT_VALUE,
   addNewComment: () => {},
   deleteComment: () => {},
@@ -47,6 +50,10 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
 
   const { createErrorNotification, createSuccessNotification } =
     useNotifications();
+
+  const userSpecificComments = useMemo(() => {
+    return comments.filter((c) => c.user.id === user?.id);
+  }, [comments]);
 
   const addNewComment = async (text: string) => {
     if (!user?.id) {
@@ -114,6 +121,7 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
 
   const context: ICommentsContext = {
     comments,
+    userSpecificComments,
     isProcessing,
     addNewComment,
     deleteComment,

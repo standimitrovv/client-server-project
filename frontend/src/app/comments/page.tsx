@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { LoadingSpinner } from '../contact/components/LoadingSpinner';
 import { useSessionContext } from '../session/state/UseSessionContext';
 import { Comment } from './components/Comment';
@@ -29,8 +29,13 @@ export default function Comments() {
 
   const { user } = useSessionContext();
 
-  const { comments, isProcessing, addNewComment, deleteComment } =
-    useComments();
+  const {
+    comments,
+    userSpecificComments,
+    isProcessing,
+    addNewComment,
+    deleteComment,
+  } = useComments();
 
   const handleFormSubmit = (text: string) => {
     addNewComment(text);
@@ -39,6 +44,12 @@ export default function Comments() {
   const handleCommentDelete = (commentId: number) => {
     deleteComment(commentId);
   };
+
+  const commentsToMap = useMemo(() => {
+    return activeTab === 'All comments' ? comments : userSpecificComments;
+  }, [activeTab]);
+
+  console.log(userSpecificComments);
 
   return (
     <section id='comments' className='max-w-3xl m-auto'>
@@ -61,7 +72,7 @@ export default function Comments() {
         {isProcessing ? (
           <LoadingSpinner size={48} />
         ) : (
-          comments.map((c) => (
+          commentsToMap.map((c) => (
             <Comment
               key={c.id}
               comment={c}
