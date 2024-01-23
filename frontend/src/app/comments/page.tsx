@@ -49,8 +49,6 @@ export default function Comments() {
     return activeTab === 'All comments' ? comments : userSpecificComments;
   }, [activeTab]);
 
-  console.log(userSpecificComments);
-
   return (
     <section id='comments' className='max-w-3xl m-auto'>
       <Form onSubmit={handleFormSubmit} />
@@ -75,6 +73,7 @@ export default function Comments() {
           commentsToMap.map((c) => (
             <Comment
               key={c.id}
+              isOwnComment={c.user.id === user?.id}
               comment={c}
               deleteComment={
                 c.user.id === user?.id

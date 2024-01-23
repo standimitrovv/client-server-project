@@ -6,11 +6,13 @@ import { IComment } from '../models/Comment';
 
 interface Props {
   comment: IComment;
+  isOwnComment: boolean;
   deleteComment?: () => void;
 }
 
 export const Comment: React.FunctionComponent<Props> = ({
   comment,
+  isOwnComment,
   deleteComment,
 }) => {
   return (
@@ -20,7 +22,9 @@ export const Comment: React.FunctionComponent<Props> = ({
 
         <div className='flex flex-col'>
           <div className='flex items-center'>
-            <span className='font-semibold mr-2'>{`@${comment.user.userName}`}</span>
+            <span className='font-semibold mr-2'>
+              {isOwnComment ? 'You' : `@${comment.user.userName}`}
+            </span>
             {/* <TimeAgo
               date={comment.date}
               minPeriod={10}
