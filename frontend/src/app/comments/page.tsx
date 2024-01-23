@@ -11,8 +11,6 @@ export default function Comments() {
 
   const handleFormSubmit = (text: string) => {
     addNewComment(text);
-
-    createSuccessNotification('Comment successfully added!');
   };
 
   const handleCommentDelete = (commentId: string) => {

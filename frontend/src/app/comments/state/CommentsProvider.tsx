@@ -2,7 +2,13 @@
 
 import { useNotifications } from '@/app/hooks/UseNotifications';
 import { useSessionContext } from '@/app/session/state/UseSessionContext';
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { createComment } from '../api/CreateComment';
 import { getAllComments } from '../api/GetAllComments';
 import { IComment } from '../models/Comment';
@@ -42,27 +48,39 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
 
     try {
       const res = await createComment({ text, userId: user.id });
-    } catch (err) {}
+
+      if (!res.errorMessages.length || res.result) {
+        createSuccessNotification('Your comment was added successfully!');
+
+        await fetchAndSetAllComments();
+      }
+    } catch (err) {
+      createErrorNotification('Something went wrong with adding you comment');
+    }
   };
 
   const deleteComment = (commentId: string) => {
     // setComments((prevState) => prevState.filter((c) => c.id !== commentId));
   };
 
+  const fetchAndSetAllComments = useCallback(async () => {
+    try {
+      const res = await getAllComments();
+
+      if (!res.errorMessages.length || res.result) {
+        setComments(res.result);
+      }
+    } catch (err) {
+      createErrorNotification(
+        'Something went wrong with fetching the comments'
+      );
+    }
+  }, []);
+
   // Initial comments fetch
   useEffect(() => {
     (async () => {
-      try {
-        const res = await getAllComments();
-
-        if (res.result) {
-          setComments(res.result);
-        }
-      } catch (err) {
-        createErrorNotification(
-          'Something went wrong with fetching the comments'
-        );
-      }
+      await fetchAndSetAllComments();
     })();
   }, []);
 
