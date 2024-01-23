@@ -1,13 +1,13 @@
 'use client';
-import { useNotifications } from '../hooks/UseNotifications';
+import { useSessionContext } from '../session/state/UseSessionContext';
 import { Comment } from './components/Comment';
 import { Form } from './components/Form';
 import { useComments } from './state/CommentsProvider';
 
 export default function Comments() {
-  const { comments, addNewComment, deleteComment } = useComments();
+  const { user } = useSessionContext();
 
-  const { createSuccessNotification } = useNotifications();
+  const { comments, addNewComment, deleteComment } = useComments();
 
   const handleFormSubmit = (text: string) => {
     addNewComment(text);
@@ -15,8 +15,6 @@ export default function Comments() {
 
   const handleCommentDelete = (commentId: string) => {
     deleteComment(commentId);
-
-    createSuccessNotification('Comment successfully deleted!');
   };
 
   return (
@@ -24,11 +22,15 @@ export default function Comments() {
       <Form onSubmit={handleFormSubmit} />
 
       <ul>
-        {comments.map((c, index) => (
+        {comments.map((c) => (
           <Comment
-            key={`${c.text}-${index}`}
+            key={c.id}
             comment={c}
-            deleteComment={() => {}}
+            deleteComment={
+              c.user.id === user?.id
+                ? () => handleCommentDelete(c.id)
+                : undefined
+            }
           />
         ))}
       </ul>

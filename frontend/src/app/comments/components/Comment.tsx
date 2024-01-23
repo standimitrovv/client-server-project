@@ -6,7 +6,7 @@ import { IComment } from '../models/Comment';
 
 interface Props {
   comment: IComment;
-  deleteComment: () => void;
+  deleteComment?: () => void;
 }
 
 export const Comment: React.FunctionComponent<Props> = ({
@@ -35,13 +35,15 @@ export const Comment: React.FunctionComponent<Props> = ({
         </div>
       </div>
 
-      <span
-        className='cursor-pointer p-2'
-        title='Delete comment'
-        onClick={deleteComment}
-      >
-        &#x2715;
-      </span>
+      {deleteComment && (
+        <span
+          className='cursor-pointer p-2'
+          title='Delete comment'
+          onClick={deleteComment}
+        >
+          &#x2715;
+        </span>
+      )}
     </li>
   );
 };
