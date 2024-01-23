@@ -7,10 +7,10 @@ namespace API.Repository
     {
         Task<List<Comment>> GetAllCommentsAsync();
 
-        Task<Comment> GetCommentAsync(int id);
-
         Task CreateCommentAsync(Comment comment);
 
-        Task DeleteCommentAsync(int id);
+        Task DeleteCommentAsync(Comment comment);
+
+        Task<Comment> FindCommentByIdAsync(int id);
     }
 }

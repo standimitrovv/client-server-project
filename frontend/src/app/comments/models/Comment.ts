@@ -6,7 +6,7 @@ export interface CommentRequestModel {
 }
 
 export interface IComment {
-  id: string;
+  id: number;
   text: string;
   user: User;
 }

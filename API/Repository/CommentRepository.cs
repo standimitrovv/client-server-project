@@ -18,10 +18,6 @@ namespace API.Repository
             return await _db.Comments.ToListAsync();
         }
 
-        public async Task<Comment> GetCommentAsync(int id)
-        {
-            return await FindCommentById(id);
-        }
         public async Task CreateCommentAsync(Comment comment)
         {
             await _db.Comments.AddAsync(comment);
@@ -29,10 +25,8 @@ namespace API.Repository
             await SaveAsync();
         }
 
-        public async Task DeleteCommentAsync(int id)
+        public async Task DeleteCommentAsync(Comment comment)
         {
-            var comment = await FindCommentById(id);
-
             _db.Comments.Remove(comment);
 
             await SaveAsync();
@@ -43,7 +37,7 @@ namespace API.Repository
             await _db.SaveChangesAsync();
         }
 
-        private async Task<Comment> FindCommentById(int id)
+        public async Task<Comment> FindCommentByIdAsync(int id)
         {
             return await _db.Comments.FirstOrDefaultAsync(c => c.Id == id);
         }

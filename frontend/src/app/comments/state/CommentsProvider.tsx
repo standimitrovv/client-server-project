@@ -10,13 +10,14 @@ import {
   useState,
 } from 'react';
 import { createComment } from '../api/CreateComment';
+import { removeComment } from '../api/DeleteComment';
 import { getAllComments } from '../api/GetAllComments';
 import { IComment } from '../models/Comment';
 
 interface ICommentsContext {
   comments: IComment[];
   addNewComment: (text: string) => void;
-  deleteComment: (commentId: string) => void;
+  deleteComment: (commentId: number) => void;
 }
 
 const CommentsContext = createContext<ICommentsContext>({
@@ -59,8 +60,24 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
     }
   };
 
-  const deleteComment = (commentId: string) => {
-    // setComments((prevState) => prevState.filter((c) => c.id !== commentId));
+  const deleteComment = async (commentId: number) => {
+    try {
+      const res = await removeComment(commentId);
+
+      if (!res.ok) {
+        createErrorNotification("The comment you selected wasn't deleted");
+
+        return;
+      }
+
+      createSuccessNotification('The comment was successfully deleted!');
+
+      await fetchAndSetAllComments();
+    } catch (err) {
+      createErrorNotification(
+        'Something went wrong with deleting the selected comment'
+      );
+    }
   };
 
   const fetchAndSetAllComments = useCallback(async () => {

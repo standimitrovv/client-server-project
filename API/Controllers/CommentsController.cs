@@ -102,5 +102,31 @@ namespace API.Controllers
 
             return _apiRes;
         }
+
+        [HttpDelete("{commentId:int}")]
+        public async Task<ActionResult> DeleteComment(int commentId)
+        {
+            if(commentId <= 0)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var comment = await _commentRepository.FindCommentByIdAsync(commentId);
+
+                if(comment == null)
+                {
+                    return NotFound();
+                }
+
+                await _commentRepository.DeleteCommentAsync(comment);
+
+                return Ok();
+            } catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

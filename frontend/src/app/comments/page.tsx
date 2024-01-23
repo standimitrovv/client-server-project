@@ -13,7 +13,7 @@ export default function Comments() {
     addNewComment(text);
   };
 
-  const handleCommentDelete = (commentId: string) => {
+  const handleCommentDelete = (commentId: number) => {
     deleteComment(commentId);
   };
 
