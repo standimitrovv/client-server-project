@@ -1,5 +1,5 @@
 'use client';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { LoadingSpinner } from '../contact/components/LoadingSpinner';
 import { useSessionContext } from '../session/state/UseSessionContext';
 import { Comment } from './components/Comment';
@@ -45,9 +45,8 @@ export default function Comments() {
     deleteComment(commentId);
   };
 
-  const commentsToMap = useMemo(() => {
-    return activeTab === 'All comments' ? comments : userSpecificComments;
-  }, [activeTab]);
+  const commentsToMap =
+    activeTab === 'All comments' ? comments : userSpecificComments;
 
   return (
     <section id='comments' className='max-w-3xl m-auto'>
