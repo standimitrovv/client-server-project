@@ -98,7 +98,7 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
   const fetchAndSetAllComments = useCallback(async () => {
     setIsProcessing(true);
     try {
-      const res = await getAllComments();
+      const res = await getAllComments({});
 
       if (!res.errorMessages.length || res.result) {
         setComments(res.result);

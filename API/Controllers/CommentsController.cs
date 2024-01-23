@@ -29,7 +29,7 @@ namespace API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status502BadGateway)]
-        public async Task<APIResponse<List<CommentDtoResponse>>> GetAllComments()
+        public async Task<APIResponse<List<CommentDtoResponse>>> GetAllComments([FromQuery] int pageSize = 10, [FromQuery] int pageNumber = 1)
         {
             var _apiListResponse = new APIResponse<List<CommentDtoResponse>>();
 
@@ -37,7 +37,7 @@ namespace API.Controllers
 
             try
             {
-                var comments = await _commentRepository.GetAllCommentsAsync();
+                var comments = await _commentRepository.GetAllCommentsAsync(pageSize, pageNumber);
 
                 if(comments.Count == 0 || comments == null)
                 {

@@ -5,7 +5,7 @@ namespace API.Repository
 {
     public interface ICommentRepository
     {
-        Task<List<Comment>> GetAllCommentsAsync();
+        Task<List<Comment>> GetAllCommentsAsync(int pageSize = 10, int pageNumber = 1);
 
         Task CreateCommentAsync(Comment comment);
 
