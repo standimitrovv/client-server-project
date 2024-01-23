@@ -27,6 +27,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status502BadGateway)]
         public async Task<APIResponse<List<CommentDtoResponse>>> GetAllComments()
         {
             var _apiListResponse = new APIResponse<List<CommentDtoResponse>>();
@@ -66,6 +68,9 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status502BadGateway)]
         public async Task<APIResponse<CommentDtoResponse>> CreateComment([FromBody] CommentDto commentDto)
         {
             var existingUser = await _userRepository.FindUserById(commentDto.UserId);
@@ -104,6 +109,9 @@ namespace API.Controllers
         }
 
         [HttpDelete("{commentId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> DeleteComment(int commentId)
         {
             if(commentId <= 0)
