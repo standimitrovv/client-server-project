@@ -14,14 +14,18 @@ import { removeComment } from '../api/DeleteComment';
 import { getAllComments } from '../api/GetAllComments';
 import { IComment } from '../models/Comment';
 
+const IS_PROCESSING_DEFAULT_VALUE = true;
+
 interface ICommentsContext {
   comments: IComment[];
+  isProcessing: boolean;
   addNewComment: (text: string) => void;
   deleteComment: (commentId: number) => void;
 }
 
 const CommentsContext = createContext<ICommentsContext>({
   comments: [],
+  isProcessing: IS_PROCESSING_DEFAULT_VALUE,
   addNewComment: () => {},
   deleteComment: () => {},
 });
@@ -34,6 +38,10 @@ interface Props {
 
 export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
   const [comments, setComments] = useState<IComment[]>([]);
+
+  const [isProcessing, setIsProcessing] = useState<boolean>(
+    IS_PROCESSING_DEFAULT_VALUE
+  );
 
   const { user } = useSessionContext();
 
@@ -81,6 +89,7 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
   };
 
   const fetchAndSetAllComments = useCallback(async () => {
+    setIsProcessing(true);
     try {
       const res = await getAllComments();
 
@@ -91,6 +100,8 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
       createErrorNotification(
         'Something went wrong with fetching the comments'
       );
+    } finally {
+      setIsProcessing(false);
     }
   }, []);
 
@@ -101,8 +112,9 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
     })();
   }, []);
 
-  const context = {
+  const context: ICommentsContext = {
     comments,
+    isProcessing,
     addNewComment,
     deleteComment,
   };

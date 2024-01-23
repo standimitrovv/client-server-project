@@ -1,4 +1,5 @@
 'use client';
+import { LoadingSpinner } from '../contact/components/LoadingSpinner';
 import { useSessionContext } from '../session/state/UseSessionContext';
 import { Comment } from './components/Comment';
 import { Form } from './components/Form';
@@ -7,7 +8,8 @@ import { useComments } from './state/CommentsProvider';
 export default function Comments() {
   const { user } = useSessionContext();
 
-  const { comments, addNewComment, deleteComment } = useComments();
+  const { comments, isProcessing, addNewComment, deleteComment } =
+    useComments();
 
   const handleFormSubmit = (text: string) => {
     addNewComment(text);
@@ -22,17 +24,21 @@ export default function Comments() {
       <Form onSubmit={handleFormSubmit} />
 
       <ul>
-        {comments.map((c) => (
-          <Comment
-            key={c.id}
-            comment={c}
-            deleteComment={
-              c.user.id === user?.id
-                ? () => handleCommentDelete(c.id)
-                : undefined
-            }
-          />
-        ))}
+        {isProcessing ? (
+          <LoadingSpinner size={48} />
+        ) : (
+          comments.map((c) => (
+            <Comment
+              key={c.id}
+              comment={c}
+              deleteComment={
+                c.user.id === user?.id
+                  ? () => handleCommentDelete(c.id)
+                  : undefined
+              }
+            />
+          ))
+        )}
       </ul>
     </section>
   );

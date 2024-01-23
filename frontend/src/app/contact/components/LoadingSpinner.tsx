@@ -1,9 +1,12 @@
-export const LoadingSpinner = () => {
+export const LoadingSpinner: React.FunctionComponent<{ size?: number }> = ({
+  size,
+}) => {
   return (
     <div role='status'>
       <svg
+        style={{ width: size || '24px', height: size || '24px' }}
         aria-hidden='true'
-        className='w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600'
+        className='text-gray-200 animate-spin dark:text-gray-600 fill-blue-600'
         viewBox='0 0 100 101'
         fill='none'
         xmlns='http://www.w3.org/2000/svg'
