@@ -3,41 +3,22 @@
 import { useState } from 'react';
 
 interface Props {
-  onSubmit: (username: string, comment: string) => void;
+  onSubmit: (comment: string) => void;
 }
 
 export const Form: React.FunctionComponent<Props> = ({ onSubmit }) => {
-  const [username, setUsername] = useState<string>('');
-
   const [comment, setComment] = useState<string>('');
 
-  const isSubmitButtonDisabled =
-    !username || !comment || !!comment.match('^\\s+$');
+  const isSubmitButtonDisabled = !comment || !!comment.match('^\\s+$');
 
   const handleFormSubmit = () => {
-    onSubmit(username, comment);
-
-    setUsername('');
+    onSubmit(comment);
 
     setComment('');
   };
 
   return (
     <form className='flex flex-col mb-8' onSubmit={(e) => e.preventDefault()}>
-      <label htmlFor='username' className='mb-2'>
-        Username
-      </label>
-      <input
-        required
-        type='text'
-        id='username'
-        name='username'
-        placeholder='What is your username?'
-        className='mb-6 rounded-md text-black p-2'
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-
       <label htmlFor='comment' className='mb-2'>
         Comment
       </label>

@@ -1,8 +1,11 @@
 ﻿using API.Dto;
+using API.Dto.DtoResponse;
 using API.Models;
 using API.Repository;
+using API.Repository.User;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -11,36 +14,93 @@ namespace API.Controllers
     public class CommentsController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly APIResponse<CommentDtoResponse> _apiRes;
         private readonly IMapper _mapper;
 
-        public CommentsController(ICommentRepository commentRepository, IMapper mapper) 
+        public CommentsController(ICommentRepository commentRepository, IUserRepository userRepository, IMapper mapper) 
         {
             _commentRepository = commentRepository;
+            _userRepository = userRepository;
+            _apiRes = new();
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<List<Comment>> GetAllComments()
+        public async Task<APIResponse<List<CommentDtoResponse>>> GetAllComments()
         {
-            var comments = await _commentRepository.GetAllCommentsAsync();
+            var _apiListResponse = new APIResponse<List<CommentDtoResponse>>();
 
-            return comments;
+            var commentsResponseList = new List<CommentDtoResponse>();
+
+            try
+            {
+                var comments = await _commentRepository.GetAllCommentsAsync();
+            
+                foreach(var comment in comments)
+                {
+                    var user = await _userRepository.FindUserById(comment.UserId);
+
+                    var c = new CommentDtoResponse()
+                    {
+                        Id = comment.Id,
+                        Text = comment.Text,
+                        User = user
+                    };
+
+                    commentsResponseList.Add(c);
+                }
+
+                _apiListResponse.StatusCode = HttpStatusCode.OK;
+                _apiListResponse.Result = commentsResponseList;
+                return _apiListResponse;
+
+            } catch (Exception ex)
+            {
+                _apiListResponse.ErrorMessages.Add(ex.Message);
+                _apiListResponse.StatusCode = HttpStatusCode.BadGateway;
+            }
+
+
+            return _apiListResponse;
         }
 
         [HttpPost]
-        public async Task CreateComment([FromBody] CommentDto commentDto)
+        public async Task<APIResponse<CommentDtoResponse>> CreateComment([FromBody] CommentDto commentDto)
         {
-            var comment = new Comment()
+            var existingUser = await _userRepository.FindUserById(commentDto.UserId);
+
+            if (string.IsNullOrWhiteSpace(commentDto.UserId) || existingUser == null)
             {
-                CreatedDate = DateTime.Now,
+                _apiRes.ErrorMessages = new List<string>() { "No user with the provided id was found" };
+                _apiRes.StatusCode = HttpStatusCode.NotFound;
+
+                return _apiRes;
+            }
+
+            var comment = _mapper.Map<Comment>(commentDto);
+
+            try
+            { 
+                await _commentRepository.CreateCommentAsync(comment);
+            } catch (Exception ex)
+            {
+                _apiRes.ErrorMessages.Add(ex.Message);
+                _apiRes.StatusCode = HttpStatusCode.BadGateway;
+                return _apiRes;
+            }
+
+            var commentResponse = new CommentDtoResponse()
+            {
+                Id = comment.Id,
                 Text = commentDto.Text,
-                UserId = commentDto.UserId,
-                UpdatedDate = DateTime.Now
+                User = existingUser
             };
 
-            //var comment = _mapper.Map<Comment>(commentDto);
+            _apiRes.StatusCode = HttpStatusCode.OK;
+            _apiRes.Result = commentResponse;
 
-            await _commentRepository.CreateCommentAsync(comment);
+            return _apiRes;
         }
     }
 }

@@ -1,12 +1,15 @@
 'use client';
 
+import { useNotifications } from '@/app/hooks/UseNotifications';
 import { useSessionContext } from '@/app/session/state/UseSessionContext';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { createComment } from '../api/CreateComment';
+import { getAllComments } from '../api/GetAllComments';
 import { IComment } from '../models/Comment';
 
 interface ICommentsContext {
   comments: IComment[];
-  addNewComment: (comment: IComment) => void;
+  addNewComment: (text: string) => void;
   deleteComment: (commentId: string) => void;
 }
 
@@ -27,26 +30,41 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
 
   const { user } = useSessionContext();
 
-  const addNewComment = async (comment: IComment) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/comments`, {
-      method: 'POST',
-      body: JSON.stringify({
-        text: comment.text,
-        userId: user?.id,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+  const { createErrorNotification, createSuccessNotification } =
+    useNotifications();
 
-    console.log(await res.json());
+  const addNewComment = async (text: string) => {
+    if (!user?.id) {
+      throw new Error(
+        'Cannot add a new comment because the user id is missing'
+      );
+    }
 
-    setComments((prevState) => [...prevState, comment]);
+    try {
+      const res = await createComment({ text, userId: user.id });
+    } catch (err) {}
   };
 
   const deleteComment = (commentId: string) => {
-    setComments((prevState) => prevState.filter((c) => c.id !== commentId));
+    // setComments((prevState) => prevState.filter((c) => c.id !== commentId));
   };
+
+  // Initial comments fetch
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getAllComments();
+
+        if (res.result) {
+          setComments(res.result);
+        }
+      } catch (err) {
+        createErrorNotification(
+          'Something went wrong with fetching the comments'
+        );
+      }
+    })();
+  }, []);
 
   const context = {
     comments,

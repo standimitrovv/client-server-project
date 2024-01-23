@@ -3,15 +3,14 @@ import { useNotifications } from '../hooks/UseNotifications';
 import { Comment } from './components/Comment';
 import { Form } from './components/Form';
 import { useComments } from './state/CommentsProvider';
-import { generateId } from './utils/GenerateId';
 
 export default function Comments() {
   const { comments, addNewComment, deleteComment } = useComments();
 
   const { createSuccessNotification } = useNotifications();
 
-  const handleFormSubmit = (username: string, text: string) => {
-    addNewComment({ text, username, date: new Date(), id: generateId() });
+  const handleFormSubmit = (text: string) => {
+    addNewComment(text);
 
     createSuccessNotification('Comment successfully added!');
   };
@@ -27,11 +26,11 @@ export default function Comments() {
       <Form onSubmit={handleFormSubmit} />
 
       <ul>
-        {comments.map((c) => (
+        {comments.map((c, index) => (
           <Comment
-            key={c.id}
+            key={`${c.text}-${index}`}
             comment={c}
-            deleteComment={() => handleCommentDelete(c.id)}
+            deleteComment={() => {}}
           />
         ))}
       </ul>

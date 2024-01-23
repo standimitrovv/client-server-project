@@ -130,5 +130,12 @@ namespace API.Repository.User
                 return _apiRes;
             }
         }
+
+        public async Task<UserDto> FindUserById(string id)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            return _mapper.Map<UserDto>(user);
+        }
     }
 }

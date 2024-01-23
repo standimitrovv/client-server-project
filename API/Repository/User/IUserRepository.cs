@@ -10,6 +10,8 @@ namespace API.Repository.User
 
         Task<APIResponse<UserDto>> Register(UserRegisterDto registerDto);
 
+        Task<UserDto> FindUserById(string id);
+
         bool isUniqueUser(string username);
     }
 }
