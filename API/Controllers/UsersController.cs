@@ -49,7 +49,7 @@ namespace API.Controllers
             if (!isUniqueUser)
             {
                 ModelState.AddModelError("Username", "Username is already taken");
-                return BadRequest(ModelState);
+                return Conflict(ModelState);
             }
 
             try
