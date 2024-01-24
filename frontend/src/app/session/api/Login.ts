@@ -10,11 +10,13 @@ export interface LoginResponse {
   token: string;
 }
 
-export const loginRequest = async (req: LoginModel) =>
-  await fetch(`${process.env.NEXT_PUBLIC_API}/users/login`, {
-    method: 'POST',
-    body: JSON.stringify(req),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+export const loginRequest = async (req: LoginModel): Promise<LoginResponse> =>
+  (
+    await fetch(`${process.env.NEXT_PUBLIC_API}/users/login`, {
+      method: 'POST',
+      body: JSON.stringify(req),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  ).json();

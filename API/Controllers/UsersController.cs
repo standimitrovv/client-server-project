@@ -1,7 +1,9 @@
 ﻿using API.Dto;
 using API.Dto.DtoResponse;
+using API.Models;
 using API.Repository.User;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -35,23 +37,36 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
 
-        public async Task<ActionResult<UserDto>> Register([FromBody] UserRegisterDto registerDto)
+        public async Task<ActionResult> Register([FromBody] UserRegisterDto registerDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var isUniqueUser = _userRepo.isUniqueUser(registerDto.Username);
 
-            if(!isUniqueUser)
+            if (!isUniqueUser)
             {
-                return Conflict();
+                ModelState.AddModelError("Username", "Username is already taken");
+                return BadRequest(ModelState);
             }
 
-            var user = await _userRepo.Register(registerDto);
-
-            if(user.Result == null)
+            try
             {
-                return BadRequest(user);
-            }
+                var response = await _userRepo.Register(registerDto);
 
-            return Ok(user);
+                if(response == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok();
+            } catch (Exception ex)
+            {
+                ModelState.AddModelError("Password", ex.Message);
+                return BadRequest(ModelState);
+            }     
         }
     }
 }

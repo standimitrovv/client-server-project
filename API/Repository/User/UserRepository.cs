@@ -94,8 +94,9 @@ namespace API.Repository.User
             };
         }
 
-        public async Task<APIResponse<UserDto>> Register(UserRegisterDto registerDto)
+        public async Task<UserDto> Register(UserRegisterDto registerDto)
         {
+
             var user = new ApplicationUser()
             {
                 UserName = registerDto.Username,
@@ -104,31 +105,16 @@ namespace API.Repository.User
                 Name = registerDto.Username.ToLower()
             };
 
-            try
+            var res = await _userManager.CreateAsync(user, registerDto.Password);
+
+            if(res.Errors.Count() > 0)
             {
-                var result = await _userManager.CreateAsync(user, registerDto.Password);
-
-                if (result.Errors.Count() > 0) 
-                {
-                    _apiRes.ErrorMessages = result.Errors.Select(e => e.Description).ToList();
-                    _apiRes.StatusCode = HttpStatusCode.BadRequest;
-                    _apiRes.Result = null;
-
-                    return _apiRes;
-                }
-                var userToReturn = _db.Users.FirstOrDefault(u => u.UserName == registerDto.Username);
-
-                _apiRes.StatusCode = HttpStatusCode.OK;
-                _apiRes.Result = _mapper.Map<UserDto>(userToReturn);
-                return _apiRes;
-
-            } catch (Exception ex)
-            {
-                _apiRes.StatusCode = HttpStatusCode.BadRequest;
-                _apiRes.ErrorMessages = new List<string>() { ex.Message };
-                _apiRes.Result = null;
-                return _apiRes;
+                throw new Exception("Please, make sure the password you provided is at least 6 characters long, has at least 1 digit and non-alphanumeric character, and includes at least one lowercase and uppercase letter");
             }
+
+            var userToReturn = _db.Users.FirstOrDefault(u => u.UserName == registerDto.Username);
+
+            return _mapper.Map<UserDto>(userToReturn);
         }
 
         public async Task<UserDto> FindUserById(string id)

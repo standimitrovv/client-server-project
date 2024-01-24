@@ -6,7 +6,8 @@ import { RegisterModel } from '../api/Register';
 import { useSessionContext } from '../state/UseSessionContext';
 
 export const Register = () => {
-  const { openSignInPage, register } = useSessionContext();
+  const { openSignInPage, register, isProcessing, errorMessage } =
+    useSessionContext();
 
   return (
     <div className='flex flex-col'>
@@ -15,7 +16,17 @@ export const Register = () => {
         Create your account
       </span>
 
-      <RegisterForm submitForm={register} />
+      <div className='my-6'>
+        {errorMessage && (
+          <div className='bg-red-600 py-2 px-4 rounded-md'>{errorMessage}</div>
+        )}
+      </div>
+
+      <RegisterForm
+        submitForm={register}
+        isProcessing={isProcessing}
+        hasError={!!errorMessage}
+      />
 
       <span
         className='mt-8 text-blue-400 cursor-pointer'
@@ -29,24 +40,17 @@ export const Register = () => {
 
 const RegisterForm: React.FunctionComponent<{
   submitForm: (formData: RegisterModel) => Promise<void>;
-}> = ({ submitForm }) => {
+  isProcessing: boolean;
+  hasError: boolean;
+}> = ({ submitForm, isProcessing, hasError }) => {
   const [username, setUsername] = useState<string>('');
 
   const [email, setEmail] = useState<string>('');
 
   const [password, setPassword] = useState<string>('');
 
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const handleFormSubmit = async () => {
-    setIsSubmitting(true);
-    try {
-      await submitForm({ username, password, email });
-    } catch (err) {
-      // TODO: handle the error
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleFormSubmit = () => {
+    submitForm({ username, password, email });
   };
 
   return (
@@ -59,7 +63,7 @@ const RegisterForm: React.FunctionComponent<{
         required
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        disabled={isSubmitting}
+        disabled={isProcessing}
       />
 
       <label htmlFor='email'>E-mail</label>
@@ -70,7 +74,7 @@ const RegisterForm: React.FunctionComponent<{
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        disabled={isSubmitting}
+        disabled={isProcessing}
       />
 
       <label htmlFor='password'>Password</label>
@@ -81,14 +85,14 @@ const RegisterForm: React.FunctionComponent<{
         required
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        disabled={isSubmitting}
+        disabled={isProcessing}
       />
       <button
         className='bg-blue-500 py-2 rounded-md mt-3 outline-none flex justify-center'
         onClick={handleFormSubmit}
-        disabled={isSubmitting}
+        disabled={isProcessing}
       >
-        {isSubmitting ? <LoadingSpinner /> : 'Sign up'}
+        {isProcessing ? <LoadingSpinner /> : 'Sign up'}
       </button>
     </form>
   );

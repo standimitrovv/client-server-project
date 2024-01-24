@@ -8,7 +8,7 @@ namespace API.Repository.User
     {
         Task<LoginResponseDto> Login(UserLoginDto loginDto);
 
-        Task<APIResponse<UserDto>> Register(UserRegisterDto registerDto);
+        Task<UserDto> Register(UserRegisterDto registerDto);
 
         Task<UserDto> FindUserById(string id);
 
