@@ -76,7 +76,11 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
         }
       }
     } catch (err) {
-      createErrorNotification('Something went wrong with adding you comment');
+      createErrorNotification(
+        'Something went wrong with loading the comments',
+        { autoClose: false }
+      );
+      setHasMore(false);
     }
   };
 

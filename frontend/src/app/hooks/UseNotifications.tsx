@@ -22,9 +22,13 @@ export const useNotifications = () => {
     });
   };
 
-  const createErrorNotification = (text: string) => {
+  const createErrorNotification = (
+    text: string,
+    options?: ToastContainerProps
+  ) => {
     toast.error(text, {
       ...commonProps,
+      ...options,
     });
   };
 
