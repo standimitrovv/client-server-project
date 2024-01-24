@@ -118,7 +118,7 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
         refetchAllComments();
       }
     } catch (err) {
-      createErrorNotification('Something went wrong with adding you comment');
+      createErrorNotification('Something went wrong with adding your comment');
     }
   };
 
@@ -132,7 +132,7 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
         return;
       }
 
-      createSuccessNotification('The comment was successfully deleted!');
+      createSuccessNotification('The comment was deleted successfully!');
 
       refetchAllComments();
     } catch (err) {
