@@ -13,7 +13,7 @@ namespace API.Repository
             _db = db;
         }
 
-        public async Task<List<Comment>> GetAllCommentsAsync(int pageSize = 10, int pageNumber = 1)
+        public async Task<List<Comment>> GetAllCommentsAsync(int pageSize = 12, int pageNumber = 1)
         {
             const int MAX_PAGE_SIZE = 100;
 
@@ -22,7 +22,9 @@ namespace API.Repository
                 pageSize = MAX_PAGE_SIZE;
             }
 
-            return await _db.Comments.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToListAsync();
+            var comments = _db.Comments.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
+
+            return await comments.ToListAsync();
         }
 
         public async Task CreateCommentAsync(Comment comment)

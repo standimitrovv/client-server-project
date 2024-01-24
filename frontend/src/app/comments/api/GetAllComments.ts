@@ -1,9 +1,10 @@
 import { APIResponse } from '@/app/models/APIResponse';
 import { IComment } from '../models/Comment';
 
-const DEFAULT_PAGE_SIZE = 10;
-
-const DEFAULT_PAGE_NUMBER = 1;
+export enum GetAllCommentsDefaultQueryValues {
+  DEFAULT_PAGE_SIZE = 12,
+  DEFAULT_PAGE_NUMBER = 1,
+}
 
 interface Options {
   pageSize?: number;
@@ -11,8 +12,8 @@ interface Options {
 }
 
 export const getAllComments = async ({
-  pageSize = DEFAULT_PAGE_SIZE,
-  pageNumber = DEFAULT_PAGE_NUMBER,
+  pageSize = GetAllCommentsDefaultQueryValues.DEFAULT_PAGE_SIZE,
+  pageNumber = GetAllCommentsDefaultQueryValues.DEFAULT_PAGE_NUMBER,
 }: Options): Promise<APIResponse<IComment[]>> => {
   return (
     await fetch(

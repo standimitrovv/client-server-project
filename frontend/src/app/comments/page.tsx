@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import { LoadingSpinner } from '../contact/components/LoadingSpinner';
 import { useSessionContext } from '../session/state/UseSessionContext';
 import { Comment } from './components/Comment';
 import { Form } from './components/Form';
@@ -30,9 +29,9 @@ export default function Comments() {
   const { user } = useSessionContext();
 
   const {
+    ObservedElement,
     comments,
     userSpecificComments,
-    isProcessing,
     addNewComment,
     deleteComment,
   } = useComments();
@@ -66,22 +65,20 @@ export default function Comments() {
       </div>
 
       <ul>
-        {isProcessing ? (
-          <LoadingSpinner size={48} />
-        ) : (
-          commentsToMap.map((c) => (
-            <Comment
-              key={c.id}
-              isOwnComment={c.user.id === user?.id}
-              comment={c}
-              deleteComment={
-                c.user.id === user?.id
-                  ? () => handleCommentDelete(c.id)
-                  : undefined
-              }
-            />
-          ))
-        )}
+        {commentsToMap.map((c) => (
+          <Comment
+            key={c.id}
+            isOwnComment={c.user.id === user?.id}
+            comment={c}
+            deleteComment={
+              c.user.id === user?.id
+                ? () => handleCommentDelete(c.id)
+                : undefined
+            }
+          />
+        ))}
+
+        <ObservedElement />
       </ul>
     </section>
   );
