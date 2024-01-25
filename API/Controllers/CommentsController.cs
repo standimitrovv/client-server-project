@@ -56,7 +56,8 @@ namespace API.Controllers
                     {
                         Id = comment.Id,
                         Text = comment.Text,
-                        User = user
+                        User = user,
+                        CreatedDate = comment.CreatedDate,
                     };
 
                     commentsResponseList.Add(c);
@@ -93,6 +94,7 @@ namespace API.Controllers
             }
 
             var comment = _mapper.Map<Comment>(commentDto);
+            comment.CreatedDate = DateTime.Now;
 
             try
             { 

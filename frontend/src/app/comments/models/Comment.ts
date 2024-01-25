@@ -9,4 +9,5 @@ export interface IComment {
   id: number;
   text: string;
   user: User;
+  createdDate: Date;
 }

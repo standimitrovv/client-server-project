@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import TimeAgo from 'react-timeago';
 import img from '../../images/icon-p.png';
 import { IComment } from '../models/Comment';
 
@@ -35,6 +36,11 @@ export const Comment: React.FunctionComponent<Props> = ({
             <span className='font-semibold mr-2'>
               {isOwnComment ? 'You' : `@${comment.user.userName}`}
             </span>
+            <TimeAgo
+              date={comment.createdDate}
+              minPeriod={10}
+              className='text-gray-200 text-sm'
+            />
           </div>
           <div className='grid grid-cols-1'>
             <span className='text-ellipsis overflow-hidden whitespace-nowrap'>
