@@ -95,6 +95,7 @@ namespace API.Controllers
 
             var comment = _mapper.Map<Comment>(commentDto);
             comment.CreatedDate = DateTime.Now;
+            comment.UpdatedDate = DateTime.Now;
 
             try
             { 
