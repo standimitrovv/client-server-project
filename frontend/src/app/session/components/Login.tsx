@@ -47,6 +47,9 @@ const LoginForm: React.FunctionComponent<{
 
   const [password, setPassword] = useState<string>('');
 
+  const isSubmitButtonDisabled =
+    !username.trim().length || !password.trim().length || isProcessing;
+
   const handleFormSubmit = () => {
     submitForm({ username, password });
   };
@@ -80,7 +83,7 @@ const LoginForm: React.FunctionComponent<{
       <button
         className='bg-blue-500 py-2 rounded-md mt-3 outline-none flex justify-center'
         onClick={handleFormSubmit}
-        disabled={isProcessing}
+        disabled={isSubmitButtonDisabled}
       >
         {isProcessing ? <LoadingSpinner /> : 'Sign in'}
       </button>

@@ -22,11 +22,7 @@ export const Register = () => {
         )}
       </div>
 
-      <RegisterForm
-        submitForm={register}
-        isProcessing={isProcessing}
-        hasError={!!errorMessage}
-      />
+      <RegisterForm submitForm={register} isProcessing={isProcessing} />
 
       <span
         className='mt-8 text-blue-400 cursor-pointer'
@@ -41,13 +37,19 @@ export const Register = () => {
 const RegisterForm: React.FunctionComponent<{
   submitForm: (formData: RegisterModel) => Promise<void>;
   isProcessing: boolean;
-  hasError: boolean;
-}> = ({ submitForm, isProcessing, hasError }) => {
+}> = ({ submitForm, isProcessing }) => {
   const [username, setUsername] = useState<string>('');
 
   const [email, setEmail] = useState<string>('');
 
   const [password, setPassword] = useState<string>('');
+
+  const isSubmitButtonDisabled =
+    !username.trim().length ||
+    !email.trim().length ||
+    !!email.match('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$') === false ||
+    !password.trim().length ||
+    isProcessing;
 
   const handleFormSubmit = () => {
     submitForm({ username, password, email });
@@ -90,7 +92,7 @@ const RegisterForm: React.FunctionComponent<{
       <button
         className='bg-blue-500 py-2 rounded-md mt-3 outline-none flex justify-center'
         onClick={handleFormSubmit}
-        disabled={isProcessing}
+        disabled={isSubmitButtonDisabled}
       >
         {isProcessing ? <LoadingSpinner /> : 'Sign up'}
       </button>
