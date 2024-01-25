@@ -19,6 +19,12 @@ export const Comment: React.FunctionComponent<Props> = ({
   isBeingEdited,
   setCommentBeingEditedId,
 }) => {
+  const handleEditCommentClick = () => {
+    window.scrollTo(0, 0);
+
+    setCommentBeingEditedId();
+  };
+
   return (
     <li className='mb-4 flex justify-between items-center'>
       <div className='flex'>
@@ -42,7 +48,7 @@ export const Comment: React.FunctionComponent<Props> = ({
         <div className='flex items-center gap-3'>
           <span
             className='cursor-pointer'
-            onClick={setCommentBeingEditedId}
+            onClick={handleEditCommentClick}
             title='Edit'
           >
             <svg
