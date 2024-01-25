@@ -36,7 +36,7 @@ export const CommentBeingEdited: React.FunctionComponent<Props> = ({
             <span className='font-semibold mr-2'>You</span>
           </div>
           <input
-            className='h-6 outline-blue-500 p-2 rounded-md text-black'
+            className='h-6 outline-blue-500 p-2 w-40 md:w-full rounded-md text-black'
             placeholder={placeholder}
             value={text}
             onChange={(e) => setText(e.target.value)}
