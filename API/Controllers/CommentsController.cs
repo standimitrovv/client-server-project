@@ -117,6 +117,39 @@ namespace API.Controllers
             return _apiRes;
         }
 
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> UpdateComment([FromBody] UpdateCommentDto commentDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var comment = await _commentRepository.FindCommentByIdAsync(commentDto.Id);
+
+            if(comment == null)
+            {
+                ModelState.AddModelError("Comment", "A comment with the provided Id was not found");
+                return BadRequest(ModelState);
+            }
+
+            comment.UpdatedDate = DateTime.Now;
+            comment.Text = commentDto.Text;
+
+            try
+            {
+                await _commentRepository.UpdateComment(comment);
+            } catch (Exception ex)
+            {
+                ModelState.AddModelError("Exception", ex.Message);
+                return BadRequest(ModelState);
+            }
+
+            return Ok();
+        }
+
         [HttpDelete("{commentId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

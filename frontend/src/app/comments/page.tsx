@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useSessionContext } from '../session/state/UseSessionContext';
 import { Comment } from './components/Comment';
+import { CommentBeingEdited } from './components/CommentBeingEdited';
 import { Form } from './components/Form';
 import { useComments } from './state/CommentsProvider';
 
@@ -26,6 +27,10 @@ const tabs: Tabs[] = [
 export default function Comments() {
   const [activeTab, setActiveTab] = useState<Tab>('All comments');
 
+  const [commentBeingEditedId, setCommentBeingEditedId] = useState<
+    number | undefined
+  >(undefined);
+
   const { user } = useSessionContext();
 
   const {
@@ -34,7 +39,15 @@ export default function Comments() {
     userSpecificComments,
     addNewComment,
     deleteComment,
+    editComment,
   } = useComments();
+
+  const commentsToMap =
+    activeTab === 'All comments' ? comments : userSpecificComments;
+
+  const commentBeingEdited = commentsToMap.find(
+    (c) => c.id === commentBeingEditedId
+  );
 
   const handleFormSubmit = (text: string) => {
     addNewComment(text);
@@ -44,8 +57,10 @@ export default function Comments() {
     deleteComment(commentId);
   };
 
-  const commentsToMap =
-    activeTab === 'All comments' ? comments : userSpecificComments;
+  const handleSubmitEditedComment = (text: string, commentId: number) => {
+    editComment(text, commentId);
+    setCommentBeingEditedId(undefined);
+  };
 
   return (
     <section id='comments' className='max-w-3xl m-auto'>
@@ -65,18 +80,28 @@ export default function Comments() {
       </div>
 
       <ul>
-        {commentsToMap.map((c) => (
-          <Comment
-            key={c.id}
-            isOwnComment={c.user.id === user?.id}
-            comment={c}
-            deleteComment={
-              c.user.id === user?.id
-                ? () => handleCommentDelete(c.id)
-                : undefined
+        {commentBeingEdited && (
+          <CommentBeingEdited
+            placeholder={commentBeingEdited.text}
+            cancelEditing={() => setCommentBeingEditedId(undefined)}
+            submitEditedComment={(text: string) =>
+              handleSubmitEditedComment(text, commentBeingEdited.id)
             }
           />
-        ))}
+        )}
+
+        {commentsToMap
+          .filter((c) => c.id !== commentBeingEditedId)
+          .map((c) => (
+            <Comment
+              key={c.id}
+              isOwnComment={c.user.id === user?.id}
+              comment={c}
+              deleteComment={() => handleCommentDelete(c.id)}
+              isBeingEdited={!!commentBeingEditedId}
+              setCommentBeingEditedId={() => setCommentBeingEditedId(c.id)}
+            />
+          ))}
 
         <ObservedElement />
       </ul>

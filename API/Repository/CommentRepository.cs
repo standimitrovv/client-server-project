@@ -34,6 +34,13 @@ namespace API.Repository
             await SaveAsync();
         }
 
+        public async Task UpdateComment(Comment comment)
+        {
+            _db.Comments.Update(comment);
+
+            await SaveAsync();
+        }
+
         public async Task DeleteCommentAsync(Comment comment)
         {
             _db.Comments.Remove(comment);

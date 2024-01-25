@@ -14,6 +14,7 @@ import {
 } from 'react';
 import { createComment } from '../api/CreateComment';
 import { removeComment } from '../api/DeleteComment';
+import { editCommentRequest } from '../api/EditComment';
 import {
   GetAllCommentsDefaultQueryValues,
   getAllComments,
@@ -28,6 +29,7 @@ interface ICommentsContext {
   userSpecificComments: IComment[];
   addNewComment: (text: string) => void;
   deleteComment: (commentId: number) => void;
+  editComment: (text: string, commentId: number) => void;
 }
 
 const CommentsContext = createContext<ICommentsContext>({
@@ -36,6 +38,7 @@ const CommentsContext = createContext<ICommentsContext>({
   userSpecificComments: [],
   addNewComment: () => {},
   deleteComment: () => {},
+  editComment: () => {},
 });
 
 export const useComments = () => useContext(CommentsContext);
@@ -142,6 +145,31 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
     }
   };
 
+  const editComment = async (text: string, commentId: number) => {
+    try {
+      const res = await editCommentRequest({
+        id: commentId,
+        text,
+      });
+
+      if (!res.ok) {
+        createErrorNotification(
+          'Something went wrong with editing the selected comment'
+        );
+
+        return;
+      }
+
+      createSuccessNotification('The comment was edited successfully!');
+
+      refetchAllComments();
+    } catch (err) {
+      createErrorNotification(
+        'Something went wrong with editing the selected comment'
+      );
+    }
+  };
+
   const refetchAllComments = () => {
     setComments([]);
     setHasMore(HAS_MORE_DEFAULT_VALUE);
@@ -166,6 +194,7 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
     userSpecificComments,
     addNewComment,
     deleteComment,
+    editComment,
   };
 
   return (

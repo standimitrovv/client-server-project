@@ -9,6 +9,8 @@ namespace API.Repository
 
         Task CreateCommentAsync(Comment comment);
 
+        Task UpdateComment(Comment comment);
+
         Task DeleteCommentAsync(Comment comment);
 
         Task<Comment> FindCommentByIdAsync(int id);
