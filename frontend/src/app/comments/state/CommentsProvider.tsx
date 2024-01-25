@@ -23,6 +23,17 @@ import { IComment } from '../models/Comment';
 
 const HAS_MORE_DEFAULT_VALUE = true;
 
+const NOTIFICATION_MESSAGES = {
+  COMMENTS_LOAD_FAIL: 'Something went wrong with loading the comments',
+  COMMENT_ADD_SUCCESS: 'Your comment was added successfully!',
+  COMMENT_ADD_FAIL: 'Something went wrong with adding your comment',
+  COMMENT_DELETE_SUCCESS: 'The comment was deleted successfully!',
+  COMMENT_DELETE_FAIL: 'Something went wrong with deleting your comment',
+  COMMENT_DELETE_ERROR: 'The comment was deleted successfully!',
+  COMMENT_EDIT_SUCCESS: 'The comment was edited successfully!',
+  COMMENT_EDIT_FAIL: 'Something went wrong with editing the selected comment',
+};
+
 interface ICommentsContext {
   ObservedElement: FunctionComponent<{}>;
   comments: IComment[];
@@ -79,10 +90,9 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
         }
       }
     } catch (err) {
-      createErrorNotification(
-        'Something went wrong with loading the comments',
-        { autoClose: false }
-      );
+      createErrorNotification(NOTIFICATION_MESSAGES.COMMENTS_LOAD_FAIL, {
+        autoClose: false,
+      });
       setHasMore(false);
     }
   };
@@ -116,12 +126,12 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
       const res = await createComment({ text, userId: user.id });
 
       if (!res.errorMessages.length || res.result) {
-        createSuccessNotification('Your comment was added successfully!');
+        createSuccessNotification(NOTIFICATION_MESSAGES.COMMENT_ADD_SUCCESS);
 
         refetchAllComments();
       }
     } catch (err) {
-      createErrorNotification('Something went wrong with adding your comment');
+      createErrorNotification(NOTIFICATION_MESSAGES.COMMENT_ADD_FAIL);
     }
   };
 
@@ -130,18 +140,16 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
       const res = await removeComment(commentId);
 
       if (!res.ok) {
-        createErrorNotification("The comment you selected wasn't deleted");
+        createErrorNotification(NOTIFICATION_MESSAGES.COMMENT_DELETE_FAIL);
 
         return;
       }
 
-      createSuccessNotification('The comment was deleted successfully!');
+      createSuccessNotification(NOTIFICATION_MESSAGES.COMMENT_DELETE_SUCCESS);
 
       refetchAllComments();
     } catch (err) {
-      createErrorNotification(
-        'Something went wrong with deleting the selected comment'
-      );
+      createErrorNotification(NOTIFICATION_MESSAGES.COMMENT_DELETE_ERROR);
     }
   };
 
@@ -153,20 +161,16 @@ export const CommentsProvider: React.FunctionComponent<Props> = (props) => {
       });
 
       if (!res.ok) {
-        createErrorNotification(
-          'Something went wrong with editing the selected comment'
-        );
+        createErrorNotification(NOTIFICATION_MESSAGES.COMMENT_EDIT_FAIL);
 
         return;
       }
 
-      createSuccessNotification('The comment was edited successfully!');
+      createSuccessNotification(NOTIFICATION_MESSAGES.COMMENT_EDIT_SUCCESS);
 
       refetchAllComments();
     } catch (err) {
-      createErrorNotification(
-        'Something went wrong with editing the selected comment'
-      );
+      createErrorNotification(NOTIFICATION_MESSAGES.COMMENT_EDIT_FAIL);
     }
   };
 
