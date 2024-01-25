@@ -16,6 +16,16 @@ export const CommentBeingEdited: React.FunctionComponent<Props> = ({
 }) => {
   const [text, setText] = useState<string>('');
 
+  const isSubmitDisabled = placeholder === text || !text.trim().length;
+
+  const handleSubmitEditedComment = () => {
+    if (isSubmitDisabled) {
+      return;
+    }
+
+    submitEditedComment(text);
+  };
+
   return (
     <li className='mb-4 flex justify-between items-center'>
       <div className='flex'>
@@ -44,12 +54,12 @@ export const CommentBeingEdited: React.FunctionComponent<Props> = ({
         </span>
         <span
           className={`p-2 rounded-md bg-blue-700 ${
-            placeholder === text || !text.trim().length
+            isSubmitDisabled
               ? 'pointer-events-none bg-gray-400'
               : 'cursor-pointer'
           }`}
           title='Submit'
-          onClick={() => submitEditedComment(text)}
+          onClick={handleSubmitEditedComment}
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
