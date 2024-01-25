@@ -9,7 +9,7 @@ interface Props {
   isOwnComment: boolean;
   isBeingEdited: boolean;
   setCommentBeingEditedId: () => void;
-  deleteComment?: () => void;
+  deleteComment: () => void;
 }
 
 export const Comment: React.FunctionComponent<Props> = ({
