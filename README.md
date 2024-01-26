@@ -8,4 +8,4 @@
 6. Finally, in the same terminal you wrote `npm install`, type `npm run dev` to start the local server on port 3000.
 7. Open "https://localhost:3000" and enjoy!
 
-- NB! You need to have both projects (the one in the `API` folder and the one in the `frontend` folder) running at the same time.
+- **NB! You need to have both projects (the one in the `API` folder and the one in the `frontend` folder) running at the same time.**
