@@ -35,9 +35,16 @@ namespace API.Controllers
 
             var commentsResponseList = new List<CommentDtoResponse>();
 
+            const int MAX_PAGE_SIZE = 100;
+
+            if (pageSize > MAX_PAGE_SIZE)
+            {
+                pageSize = MAX_PAGE_SIZE;
+            }
+
             try
             {
-                var comments = await _commentRepository.GetAllCommentsAsync(pageSize, pageNumber);
+                var comments = await _commentRepository.GetAllCommentsAsync();
 
                 if(comments.Count == 0 || comments == null)
                 {
@@ -48,7 +55,9 @@ namespace API.Controllers
 
                 var sortedByCreatedDate = comments.OrderByDescending(c => c.CreatedDate).ToList();
 
-                foreach (var comment in sortedByCreatedDate)
+                var filteredComments = sortedByCreatedDate.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
+
+                foreach (var comment in filteredComments)
                 {
                     var user = await _userRepository.FindUserById(comment.UserId);
 

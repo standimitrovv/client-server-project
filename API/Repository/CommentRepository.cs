@@ -13,18 +13,9 @@ namespace API.Repository
             _db = db;
         }
 
-        public async Task<List<Comment>> GetAllCommentsAsync(int pageSize = 12, int pageNumber = 1)
+        public async Task<List<Comment>> GetAllCommentsAsync()
         {
-            const int MAX_PAGE_SIZE = 100;
-
-            if(pageSize > MAX_PAGE_SIZE)
-            {
-                pageSize = MAX_PAGE_SIZE;
-            }
-
-            var comments = _db.Comments.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
-
-            return await comments.ToListAsync();
+            return await _db.Comments.ToListAsync();
         }
 
         public async Task CreateCommentAsync(Comment comment)
